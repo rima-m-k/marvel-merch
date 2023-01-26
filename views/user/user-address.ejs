@@ -1,0 +1,66 @@
+<%- include('../layouts/userheader.ejs'); -%>
+
+
+<!-- Customized Bootstrap Stylesheet -->
+<link href="css/style2.css" rel="stylesheet">
+
+<!-- Page Header Start -->
+<div class="container-fluid bg-primary mb-5" id="top">
+  <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+      <h1 class="font-weight-semi-bold text-uppercase mb-3">Address</h1>
+      <div class="d-inline-flex">
+          <p class="m-0 text-white">Home</p>
+          <p class="m-0 px-2">-</p>
+          <p class="m-0 text-white">View Address</p>
+      </div>
+  </div>
+</div>
+<!-- Page Header End -->
+
+<div class="container mx-auto my-5">
+  <div class="row">
+
+  <% Address.forEach(function(address) { %>
+    <div class="col-md-4 col-12 mt-3">
+        <div class="card border shadow mt-5">
+          <div class="card-body">
+            <h5 class="card-title"><%= address.address_name %></h5>
+            <p class="card-text">
+             Name: <%= address.user_name %> <br>
+            Mobile:  <%= address.mobile_no %><br>
+             House Number: <%= address.house_no %><br>
+               Village:  <%= address.village %><br>
+               Landmark: <%= address.landmark %><br>
+               City: <%= address.city %><br>
+               Pin: <%= address.pincode %><br>
+               State: <%= address.state %><br>
+                Country: <%= address.country %><br>
+                <div class="d-flex justify-content-between"> 
+
+                    <!-- <a href="#">Set as default</a> -->
+                    <a href="/editAddress/<%=address._id %>" >Edit</a><a href="/removeAddress/<%= address._id%>">Remove</a>
+                </div>
+            </p>
+          </div>
+        </div>
+    </div>
+    <% }) %>
+    <div class="col-md-4 col-12 mt-3 my-auto ">
+      <div class="card bg-dark  mt-5">
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+          <p class="card-text  ">
+            <a href="/add-address" class="mx-auto">Add New Address</a>
+
+             
+          </p>
+        </div>
+      </div>
+  </div>
+  </div>
+</div>
+
+<!-- Back to Top -->
+<a href="#top" class="btn back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+<%- include('../layouts/userfooter.ejs'); -%>

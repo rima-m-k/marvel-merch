@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<header>
+		<a href="#" class="mylogo"> <img src="images/logo.jpg" alt="MarvelMerch" width="150" height="30"> </a>
+	
+		       
+        <ul class="nav justify-content-end">
+			<li class="nav-item">
+			  <a class="nav-link active" aria-current="page" href="#"> <img src="images/search_icon.png" id="search_icon"> </a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link" href="/cart"> <img src="images/cart_icon.png" id="cart_icon">  
+				
+				<span class="position-relative top-0 start-20 translate-middle badge rounded-pill bg-danger"> </span> 
+			  </a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link" href="#"> <img src="images/wishlist_icon.png" id="wishlist_icon"> </a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link" href="#"> <img src="images/profile_icon.png" id="profile_icon"> </a>
+			</li>
+			
+		  </ul>
+		  
+	</header>
+</body>
+</html>
+
+
+
+
+
+
+
+<!--  -->
+<%- include('../layouts/userheader.ejs'); -%>
+
+<!-- new cart -->
+
+<!-- Customized Bootstrap Stylesheet -->
+<link href="css/style.css" rel="stylesheet" />
+
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+  <div
+    class="d-flex flex-column align-items-center justify-content-center"
+    style="min-height: 300px"
+  >
+    <h1 class="font-weight-semi-bold text-uppercase mb-3">Shopping Cart</h1>
+    <div class="d-inline-flex">
+      <p class="m-0"><a href="">Home</a></p>
+      <p class="m-0 px-2">-</p>
+      <p class="m-0">Shopping Cart</p>
+    </div>
+  </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Cart Start -->
+<div class="container-fluid pt-5">
+  <div class="row px-xl-5">
+    <div class="col-lg-8 table-responsive mb-5">
+      <table class="table text-center mb-0">
+        <thead class="bg-secondary text-dark">
+          <tr>
+            <th>Products</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Remove</th>
+          </tr>
+        </thead>
+        <tbody class="align-middle">
+          <% cartlist.forEach(function(item) { %>
+          <tr>
+            <a href="/productdisplay/<%= item.product_id%>">
+              <td class="align-middle">
+                <img src="/images/product_images/<%= item.product_images1[0][0]%>"  alt=" " style="width: 50px" />
+                <%= item.product_name %>
+              </td>
+            </a>
+            <td class="align-middle">Rs.</td>
+            <td class="align-middle">
+              <div class="input-group quantity mx-auto" style="width: 100px">
+                <div id="reloadDiv" class="input-group-btn">
+                  <button class="btn btn-sm btn-primary btn-minus"  id="minusbutton" onclick="changeQuantity('<%= item._id %>','<%=item.product.productid %>',-1)"> 
+                    <% if( item.product.quantity == 1 ){ %>
+                      <i id="trash" class="fa fa-trash" aria-hidden="true"></i>
+                      <% }else{  %>
+                    <i class="fa fa-minus"></i>
+                    <% } %>
+                  </button>
+                </div>
+                <div
+                  class="form-control form-control-sm bg-secondary text-center"
+                  id ="<%= item.product.productid %>">
+                  <%= item.product.quantity %>
+                </div>
+                   
+                
+                <div class="input-group-btn">
+                  <button class="btn btn-sm btn-primary btn-plus" onclick="changeQuantity('<%= item._id %>','<%=item.product.productid %>',1)">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </td>
+            <td class="align-middle">Rs.</td>
+            <td class="align-middle">
+              <button class="btn btn-sm btn-primary" onclick="removeProduct('<%= item._id %>','<%=item.product.productid %>')">
+                <i class="fa fa-times"></i>
+              </button>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-lg-4">
+      <form class="mb-5" action="">
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control p-4"
+            placeholder="Coupon Code"
+          />
+          <div class="input-group-append">
+            <button class="btn btn-primary">Apply Coupon</button>
+          </div>
+        </div>
+      </form>
+      <div class="card border-secondary mb-5">
+        <div class="card-header bg-secondary border-0">
+          <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
+        </div>
+        <div class="card-body">
+          <div class="d-flex justify-content-between mb-3 pt-1">
+            <h6 class="font-weight-medium">Items</h6>
+            <h6 class="font-weight-medium"><%= len %></h6>
+          </div>
+          <div class="d-flex justify-content-between mb-3 pt-1">
+            <h6 class="font-weight-medium">Subtotal</h6>
+            <h6 class="font-weight-medium">$150</h6>
+          </div>
+          <div class="d-flex justify-content-between">
+            <h6 class="font-weight-medium">Shipping</h6>
+            <h6 class="font-weight-medium">$10</h6>
+          </div>
+        </div>
+        <div class="card-footer border-secondary bg-transparent">
+          <div class="d-flex justify-content-between mt-2">
+            <h5 class="font-weight-bold">Total</h5>
+            <h5 class="font-weight-bold">$160</h5>
+          </div>
+          <button class="btn btn-block btn-primary my-3 py-3">
+            Proceed To Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Cart End -->
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary back-to-top"
+  ><i class="fa fa-angle-double-up"></i
+></a>
+
+
+
+app.route('/book')
+  .get(addsmthng)
+  .post(postaddsmthng)
+  
+
+  <!-- nav bar of template -->
+  <!-- Navbar Start -->
+<div class="container-fluid ">
+  <div class="row border-top">
+    <div class="col-lg-12 p-0 mt-2">
+      <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0" >
+        <a href="" class="text-decoration-none d-block d-lg-none">
+          
+        </a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse" >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </nav>
+      <div id="header-carousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active" style="height: 410px">
+            <img class="img-fluid" src="/images/avengers assembled.jpg" alt="Image" />
+            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center" >
+              <div class="p-3" style="max-width: 700px">
+                <h4 class="text-light text-uppercase font-weight-medium mb-3">
+                 
+                </h4>
+                <h3 class="display-4 text-white font-weight-semi-bold mb-4">
+                  MARVEL MERCHANDISE
+                </h3>
+                <!-- <a href="" class="btn btn-light py-2 px-3">Shop Now</a> -->
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item" style="height: 410px">
+            <img class="img-fluid" src="/images/avengers dark.jpg" alt="Image" />
+            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center" >
+              <div class="p-3" style="max-width: 700px">
+                <h4 class="text-light text-uppercase font-weight-medium mb-3">
+                  10% Off Your First Order
+                </h4>
+                <h3 class="display-4 text-white font-weight-semi-bold mb-4">
+                  Reasonable Price
+                </h3>
+                <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item" style="height: 410px">
+            <img class="img-fluid" src="/images/avengers dark.jpg" alt="Image" />
+            <div
+              class="carousel-caption d-flex flex-column align-items-center justify-content-center"
+            >
+              <div class="p-3" style="max-width: 700px">
+                <h4 class="text-light text-uppercase font-weight-medium mb-3">
+                  10% Off Your First Order
+                </h4>
+                <h3 class="display-4 text-white font-weight-semi-bold mb-4">
+                  Reasonable Price
+                </h3>
+                <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#header-carousel" data-slide="prev" >
+          <div class="btn btn-dark" style="width: 45px; height: 45px">
+            <span class="carousel-control-prev-icon mb-n2"></span>
+          </div>
+        </a>
+        <a class="carousel-control-next" href="#header-carousel" data-slide="next" >
+          <div class="btn btn-dark" style="width: 45px; height: 45px">
+            <span class="carousel-control-next-icon mb-n2"></span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Navbar End -->

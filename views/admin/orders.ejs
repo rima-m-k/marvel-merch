@@ -1,0 +1,64 @@
+<%- include('../layouts/adminlayout.ejs'); -%>
+
+<div class="main">
+  <h2 class="mb-5 mt-5">ORDERS</h2>
+
+
+  <table class="table table-bordered table-responsive border-secondary">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Order ID </th>
+        <th scope="col">Order Date</th>
+        <th scope="col">User </th>
+        <th scope="col">Amount</th>
+        <th scope="col">Status </th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% orders1.forEach(function(orders,i){ %>
+
+      <tr>
+    
+        <th scope="row"><%= i+1%></th>
+        <td><%= orders._id %></td>
+        <td><%= moment(orders.orderDate).format('DD-MM-YYYY') %></td>
+        <td> <%= orders.name %></td>
+        <td> ₹ <%= orders.paidAmount %></td>
+        <!-- <td> <%= orders.orderStatus %></td> -->
+        <td> 
+          <!-- <form method="post" action="/admin/userOrders"> -->
+          <!-- <select name="orderStatus"> -->
+            <% if(orders.orderStatus=="Shipped" || orders.orderStatus=="Out for delivery") { %>
+         <span class="badge bg-primary">  <%= orders.orderStatus %></span>
+          <% } else if(orders.orderStatus=="Delivered"){ %>
+            <span class="badge bg-success">  <%= orders.orderStatus %></span>
+            <% } else if(orders.orderStatus=="Cancelled"){ %>
+              <span class="badge bg-danger">  <%= orders.orderStatus %></span>
+            
+            <% } else { %>
+              <span class="badge bg-warning">  <%= orders.orderStatus %></span>
+              <% } %>
+
+
+          <!-- <option value="Shipped">Shipped</option>blue
+          <option value="Out for delivery">Out for delivery</option>blue
+          <option value="Delivered">Delivered</option> green
+          <option value="Cancelled">Cancelled</option> red
+          <option value="Pending">Pending</option> yellow
+        </select>
+        <input type="text" value="<%= orders._id %>"  name="orderId" hidden> 
+        <button type="submit"  class="btn btn-dark" style="max-width: fit-content;">Save </button> -->
+      <!-- </form> -->
+    </td> 
+
+
+
+        <td><a href="/admin/orderDetails/<%= orders._id %>" class="btn btn-secondary">View/Edit</a></td>
+      </tr>
+    <% }) %>
+      
+    </tbody>
+  </table>
+</div>

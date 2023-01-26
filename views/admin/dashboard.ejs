@@ -1,0 +1,139 @@
+<%- include('../layouts/adminlayout.ejs'); -%>
+
+  <div class="main">
+  <h2 class="my-5">Admin Dashboard</h2>
+  <div class="container-fluid mb-5">
+    <div class="row">
+      <div class=" col-md-6 col-lg-3 py-2">
+          <div class="p-5 rounded shadow bg-light d-flex flex-column justify-content-center align-items-center">
+              <h3><b><%= data.customers %></b></h3>
+              <h5>Customers</h5>
+          </div>
+      </div>
+       <div class="col-md-6 col-lg-3 py-2">
+          <div class="p-5 rounded shadow bg-light d-flex flex-column justify-content-center align-items-center">
+              <h3><b><%= data.products %></b></h3>
+              <h5>Products</h5>
+          </div>
+      </div>
+      <div class="col-md-6 col-lg-3 py-2">
+          <div class="p-5 rounded shadow bg-light d-flex flex-column justify-content-center align-items-center">
+              <h3><b><%= data.orders %></b></h3>
+              <h5>Orders</h5>
+          </div>
+      </div>
+      <div class="col-md-6 col-lg-3 py-2">
+          <div class="p-5 rounded shadow bg-light d-flex flex-column justify-content-center align-items-center">
+              <h3><b>₹<%= data.orderSum %></b></h3>
+              <h5>Order Amount</h5>
+          </div>
+      </div> 
+      
+  </div>
+</div>
+<div class="container ">
+
+  <div class="row d-flex justify-content-around mb-5">
+    <h3>Monthly Revenue</h3>
+    <div class="col-lg-9 col-12">
+      <canvas id="barGraph"></canvas>
+    </div>
+    <!-- <div class="col-lg-3 my-auto col-12">
+      <canvas id="pieChart"></canvas>
+    </div> -->
+        
+  </div>
+
+</div>
+
+
+<script>
+  const pie = document.getElementById('pieChart')
+
+  $.ajax({
+      url: "/admin/dashboard",
+      method: "PUT",
+      success: (res) => {
+        var orderData = res.orderData;
+        console.log("order"+orderData);
+        let totalOrders = [];
+        let revenuePerMonth = [];
+        let avgBillPerOrder = [];
+        orderData.forEach((order) => {
+          totalOrders.push(order.totalOrders);
+          revenuePerMonth.push(order.revenue);
+          avgBillPerOrder.push(order.avgBillPerOrder);
+        })
+        const ctx = document.getElementById("barGraph");
+        new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec",
+            ],
+            datasets: [
+              {
+                label: "Revenue",
+                data: revenuePerMonth,
+                borderWidth: 1,
+                backgroundColor: "rgba(255, 99, 132, 0.2)",
+                borderColor: "rgb(255, 99, 132)",
+              },
+              {
+                label: "Avg. Bill per Order",
+                data: avgBillPerOrder,
+                borderWidth: 1,
+                backgroundColor: "rgba(255, 159, 64, 0.2)",
+                borderColor: "rgb(255, 159, 64)",
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        })
+    //     new Chart(pie, {
+    //       type: 'doughnut',
+    //     data:  {
+    //     labels: [
+    //     'Toys',
+    //     'T shirt',
+    //     'Pins & Badges',
+    //     'Mugs'
+    //   ],
+    //   datasets: [{
+    //     label: 'Revenue',
+    //     data: [1,2],
+    //     backgroundColor: [
+    //       'rgb(255, 99, 132)',
+    //       'rgb(54, 162, 235)',
+    //     ],
+    //     hoverOffset: 4
+    //   }]
+    // },
+
+    //     })
+ 
+
+      }
+
+  })
+  
+</script>
+ 
+</div>

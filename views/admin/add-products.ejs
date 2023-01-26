@@ -1,0 +1,73 @@
+<%- include('../layouts/adminlayout.ejs'); -%>
+<div class="main">
+  <h2>ADD PRODUCT</h2>
+  <div class="box1">
+    <p class="text-danger fw-bold mx-auto"><%=locals.message %></p>
+
+    <form method="post" action="/admin/add_products" enctype="multipart/form-data" >
+      <div class="product-add">
+        Product Title
+        <input type="text" class="form-control1" id="product-title" name="product_title" required />
+      </div>
+
+      <div class="product-add">
+        Product Description
+        <textarea rows="5" name="product_description" class="form-control1" required></textarea>
+      </div>
+
+      <div class="product-add">
+        Category
+        <!-- <input type="search" class="form-control1" id="category" name="product_category" > -->
+        <select name="product_category">
+          <% locals.cat.forEach(function(category) { %>
+          <option value="<%= category._id %>">
+            <%= category.categoryname %>
+          </option>
+          <% }) %>
+        </select>
+      </div>
+
+      <div class="product-add">
+        Price
+        <input type="number" class="form-control1" id="price" name="price" required />
+      </div>
+
+      <div class="product-add">
+        Size
+        <input type="text" class="form-control1" id="Size" name="size" required/>
+      </div>
+
+      <div class="product-add">
+        Stock
+        <input type="number" class="form-control1" id="stock" name="stock" />
+      </div>
+
+      <div class="product-add  ">
+        <div class="row border">
+          <div class="col " >
+            Image1
+            <input type="file" class="form-control1" id="image1" name="image1" style="border: none"  required/>
+            Image2
+            <input type="file" class="form-control1" id="image2" name="image2" style="border: none" required/>
+          </div>
+          
+          <div class="col ">
+            Image3
+            <input type="file" class="form-control1" id="image3" name="image3" style="border: none" required/>
+            Image4
+            <input type="file" class="form-control1" id="image4" name="image4" style="border: none" required />
+          </div>
+        </div>
+       
+        
+      </div>
+
+      <div class="product-add">
+        <button type="submit" class="btn btn-dark mt-5">Add Product</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+    

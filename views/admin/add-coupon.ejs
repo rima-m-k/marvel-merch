@@ -1,0 +1,38 @@
+<%- include('../layouts/adminlayout.ejs'); -%>
+
+<div class="main">
+  <h2>Add Coupon</h2>
+  <div class="box1">
+    <form method="post" action="/admin/add_coupon">
+      <p class="text-danger fw-bold mx-auto"><%=locals.message %></p>
+
+      <div class="product-add">
+        Coupon Name
+        <input type="text" class="form-control1" id="coupon_name" name="coupon_name" required />
+      </div>
+
+      <div class="product-add">
+        Coupon Code
+        <input type="text" class="form-control1" id="couponCode" name="couponCode" required />
+      </div>
+
+      <div class="product-add">
+        Discount in %
+        <input type="text" class="form-control1" id="discount" name="discount" required />
+      </div>
+
+      <div class="product-add">
+        Starting Date
+        <input type="date" class="form-control1" id="startingDate" name="startingDate" required />
+      </div>
+      <div class="product-add">
+        Ending Date
+        <input type="date" class="form-control1" id="expiryDate" name="expiryDate" required />
+      </div>
+
+      <div class="product-add">
+        <button type="submit" class="btn btn-dark mt-5">Add Coupon</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,82 @@
+<%- include('../layouts/adminlayout.ejs'); -%>
+
+<div class="main">
+  <h2  class="mb-5">BANNER</h2>
+  <div class="bannerClass  w-25 ">
+    <!-- Button trigger modal -->
+<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="width: fit-content;">
+  Add New Banner
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Add New Banner</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="/admin/bannerManagement" enctype="multipart/form-data">
+          <input type="file" name="bannerImg" id="bannerImg" class="mx-auto" required><br>
+        </div>
+       
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary w-25" data-bs-dismiss="modal">Add</button>
+      </form>
+  
+      </div>
+    </div>
+  </div>
+</div>
+    
+  </div>
+  <p class="text-danger fw-bold mx-auto"><%=locals.message %></p>
+  
+ 
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Banner</th>
+                <th scope="col">Status</th>
+                <th scope="col">Delete</th>
+               
+              </tr>
+            </thead>
+            <tbody>
+
+              <% banners.forEach(function(banner){ %>
+              <tr>
+                <th scope="row"><img src="/images/processed_images/<%= banner.image %>" style="width: 20vw; height: auto;"></th>
+                <% if(banner.inUse===false) { %>
+                  <td><a class=" btn btn-warning" href="/admin/useBanner/<%= banner._id %>" style="width: fit-content;">Not In Use</a></td>
+                  <% } else { %>
+                    <td><a class=" btn btn-warning" href="/admin/useBanner/<%= banner._id %>" style="width: fit-content;"> In Use</a></td>
+                <% } %>  
+                <td><button class=" btn btn-danger"  style="width: fit-content;" onclick="deletethis('<%= banner._id %>')">Delete</button></td>
+              </tr>
+             <% }) %>
+
+            </tbody>
+          </table>
+</div>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script>
+  function deletethis(ID) {
+  swal({
+  title: "Are you sure?",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+   window.location.href = '/admin/deletebanner/'+ID;
+  }  else {
+    swal("Your imaginary file is safe!");
+  }
+});
+}
+</script>

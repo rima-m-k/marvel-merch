@@ -1,0 +1,93 @@
+<%- include('../layouts/adminlayout.ejs'); -%>
+
+<!--  -->
+<div class="main">
+      <h2>EDIT PRODUCT</h2>
+      <div class="box1">
+        <form method="post" action="/admin/edit_products/<%= prod._id %>" enctype="multipart/form-data" >
+          <div class="product-add">
+            Product Title
+            <input type="text" class="form-control" id="product-title" name="product_title" value="<%= prod.product_title %>"/>
+          </div>
+    
+          <div class="product-add">
+            Product Description
+            <textarea type="text" rows="5" name="product_description" class="form-control1" >
+              <%= prod.product_description %>
+            </textarea>
+          </div>
+    
+          <div class="product-add">
+            Category
+             <select id="category" name="product_category">
+                  <option value="<%= prod.product_category._id %>" selected>
+                    <%= prod.product_category.categoryname %>
+                  </option>
+                  <% cat.forEach(function(categ) { %>
+                  <option value="<%= categ._id %>">
+                    <%= categ.categoryname %>
+                  </option>
+                  <% }) %>
+                </select>
+          </div>
+    
+          <div class="product-add">
+            Price
+            <input type="text" class="form-control1" id="price"  name="price"  value="<%=prod.price%>" />
+          </div>
+    
+          <div class="product-add">
+            Size
+            <input type="text" class="form-control1" id="Size" name="size" value="<%=prod.size %>"/>
+          </div>
+    
+          <div class="product-add">
+            Stock
+            <input type="text" class="form-control1" id="stock" name="stock" value="<%=prod.stock %>"/>
+          </div>
+    
+          <div class="product-add ">
+            <div class="row">
+              <div class="col">
+                <img src="/images/processed_images/<%=prod.images[0]%>" accept="image/*" style="width: 150px;height: 150px;" id="img1"> 
+                <label for="image1">click  the button to change image</label>
+                 <input type="file" class="form-control1 row" id="image1" name="image1"  style="border: none; " onchange="image1View(event)"> 
+
+                <img src="/images/processed_images/<%=prod.images[1]%>" style="width: 150px;height: 150px;" id="img2"> 
+                <label for="image2">click to change image</label>
+                  <input type="file" class="form-control1 row" id="image2" name="image2" style="border: none;"  onchange="image2View(event)">
+
+              </div>
+              <div class="col">
+                <img src="/images/processed_images/<%= locals.prod.images[2]%>" style="width: 150px;height: 150px;" id="img3">  
+                <label for="image3">click to change image</label>
+                 <input type="file" class="form-control1 row" id="image3" name="image3" style="border: none;"  onchange="image3View(event)">
+                <img src="/images/processed_images/<%=prod.images[3]%>" style="width: 150px;height: 150px;" id="img4"> 
+                <label for="image4">click to change image</label>
+                <input type="file" class="form-control1 row" id="image4" name="image4" style="border: none;"  onchange="image4View(event)">
+
+              </div>
+            </div>
+          </div>
+    
+          <div class="product-add">
+            <button type="submit" class="btn btn-dark mt-5">Add Product</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+      <script>
+        function image1View(event) {
+          document.getElementById('img1').src = URL.createObjectURL(event.target.files[0])
+        }
+        function image2View(event) {
+          document.getElementById('img2').src = URL.createObjectURL(event.target.files[0])
+        }
+        function image3View(event) {
+          document.getElementById('img3').src = URL.createObjectURL(event.target.files[0])
+        }
+        function image4View(event) {
+          document.getElementById('img4').src = URL.createObjectURL(event.target.files[0])
+        }
+      </script>

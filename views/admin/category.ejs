@@ -1,0 +1,48 @@
+<%- include('../layouts/adminlayout.ejs'); -%>
+<div class="main">
+  <h2>CATEGORY</h2>
+
+  <div class="buttons-component mr-3">
+    <br />
+    <br />
+    <a class="btn btn-success position-absolute top-10 end-10" href="/admin/add_category" >Add category</a>
+    <br /><br />
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered mt-5">
+      <thead>
+        <tr class="table-dark">
+          <th scope="col">#</th>
+          <th scope="col">Image</th>
+
+          <th scope="col">Category Name</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% categories.forEach(function(category,i) { %>
+        <tr>
+          <th scope="row"><%= i+1 %></th>
+          <td>
+            <img
+              src="/images/processed_images/<%= category.categoryImage %>"
+              class="image-in-product-table"
+            />
+          </td>
+
+          <td><%= category.categoryname %></td>
+          <td>
+            <a
+              href="/admin/edit_category/<%= category._id %>"
+              class="btn btn-secondary"
+              >Edit</a
+            >
+          </td>
+          <td><a href="#" class="btn btn-dark">Delete</a></td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<%- include('../layouts/adminlayout.ejs'); -%>
+<div class="main">
+  <h2>COUPONS</h2>
+
+  <div class="buttons-component mr-3">
+    <br />
+    <br />
+    <a
+      class="btn btn-success position-absolute top-10 end-10"
+      href="/admin/add_coupon"
+      >Add Coupon</a
+    >
+    <br /><br />
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered mt-5">
+      <thead>
+        <tr class="table-dark">
+          <th scope="col">#</th>
+          <th scope="col">Coupon Name</th>
+          <th scope="col">CouponCode</th>
+          <th scope="col">Discount in %</th>
+          <th scope="col">Starting Date</th>
+          <th scope="col">Expiry Date</th>
+          <th scope="col">Status</th>
+          <th scope="col">Edit</th>
+          <th scope="col">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% coupons.forEach(function(cpn,i) { %>
+        <tr>
+          <td><%= i+1 %></td>
+          <td><%= cpn.couponName %></td>
+          <td><%=cpn.couponCode %></td>
+          <td><%=cpn.discount %></td>
+          <td><%= moment(cpn.startingDate).format('DD-MM-YYYY'); %></td>
+          <td><%= moment(cpn.expiryDate).format('DD-MM-YYYY');%></td>
+
+          <td>
+              <% if(cpn.active){ %>
+                <a href="/admin/activate/<%= cpn._id %>" class="btn btn-secondary">Deactivate</a>
+            <% } else{ %>
+              <a href="/admin/activate/<%= cpn._id %>" class="btn btn-secondary">Activate</a>
+              <% } %>
+            
+          </td>
+          <td>
+            <a href="/admin/editcoupon/<%= cpn._id %>" class="btn btn-secondary">Edit</a>
+          </td>
+          <td><a href="/admin/deletecoupon/<%= cpn._id %>" class="btn btn-dark">Delete</a></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

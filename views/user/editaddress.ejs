@@ -1,0 +1,99 @@
+
+<%- include('../layouts/userheader.ejs'); -%>
+
+
+<!-- Customized Bootstrap Stylesheet -->
+<link href="css/style2.css" rel="stylesheet">
+
+
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5" id="top">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Address</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="">Home</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Edit Address</p>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+
+
+<!-- Checkout Start -->
+<div class="container-fluid pt-5">
+    <div class="row  mx-auto">
+        <div class="col-lg-8 mx-auto">
+            <div class="mb-4">
+                <h4 class="font-weight-semi-bold mb-4">Edit  Address</h4>
+               
+
+                <form method="post" action="/editAddress/<%= address._id %>">
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label>Address Name </label>
+                        <input class="form-control" type="text" name="address_name" value="<%= address.address_name %>"required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Your Name   </label>
+                        <input class="form-control" type="text" name="user_name" value="<%= address.user_name %>" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Flat/House Number/Building  </label>
+                        <input class="form-control" type="text" name='house_no' value="<%= address.house_no %>" required>
+                    </div>
+                    
+                    <div class="col-md-6 form-group">
+                        <label>Mobile Number  </label>
+                        <input class="form-control" type="number" name="mobile_no" value="<%= address.mobile_no %>" required>
+
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Area/Street/Village  </label>
+                        <input class="form-control" type="text"  name="village"value="<%= address.village %>" required>
+                    </div>
+                     <div class="col-md-6 form-group">
+                        <label>Country/Region  </label>
+                        <input class="form-control" type="text" name="country"value="<%= address.country %>" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Town/City  </label>
+                        <input class="form-control" type="text" name="city"value="<%= address.city %>" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>State  </label>
+                        <input class="form-control" type="text" name="state" value="<%= address.state %>" required>
+                    </div>
+                    
+                    
+                    
+                    <div class="col-md-6 form-group">
+                        <label>Landmark  </label>
+                        <input class="form-control" type="text" name="landmark" value="<%= address.landmark %>" required>
+                    </div>
+                   
+                    <div class="col-md-6 form-group">
+                        <label>PIN Code  </label>
+                        <input class="form-control" type="number" name="pincode" value="<%= address.pincode %>" required>
+                    </div>
+                   
+                    
+                    <div class="card-footer border-secondary bg-transparent">
+                        <button type="submit" class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Save Address</button>
+                    </div>
+                   
+                </div>
+            </form>
+            
+            </div>
+           
+        </div>
+       
+    </div>
+</div>
+
+
+<!-- Back to Top -->
+<a href="#top" class="btn back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+<%- include('../layouts/userfooter.ejs'); -%>

@@ -1,0 +1,251 @@
+
+<%- include('../layouts/userheader.ejs'); -%>
+<!-- Customized Bootstrap Stylesheet -->
+<link href="css/style2.css" rel="stylesheet" />
+
+<!-- Page Header Start -->
+<div class="container-fluid bg-Cultured mb-5" id="top">
+  <div
+    class="d-flex flex-column align-items-center justify-content-center"
+    style="min-height: 100px">
+    <!-- <h1 class="font-weight-semi-bold text-uppercase mb-5">Shop Detail</h1>
+    <div class="d-inline-flex">
+      <p class="m-0"><a href="">Home</a></p>
+      <p class="m-0 px-2">-</p>
+      <p class="m-0">Shop Detail</p>
+    </div> -->
+  </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Shop Detail Start -->
+<div class="container-fluid py-5">
+  <div class="row px-xl-5">
+   
+
+    <div class="col-lg-5 pb-5 mb-5">
+      <figure id="zoomer" class="zoom" onmousemove="zoom(event)" style="background-image: url('/images/processed_images/<%= productdetails.images[0] %>');background:no-repeat; width: 400px; "  >
+      <img class="w-75 h-75 mb-3" id="main-image" src="/images/processed_images/<%= productdetails.images[0] %>" alt="Image" /><br>
+</figure>
+      <img class="mr-3 mb-3" onclick="change_image(this)" src="/images/processed_images/<%= productdetails.images[0] %>" alt="Image"  style="width: 110px; height: 110px;"/>
+      <img class="mr-3 mb-3" onclick="change_image(this)" src="/images/processed_images/<%= productdetails.images[1] %>" alt="Image"  style="width: 110px; height: 110px;"/>
+      <img class="mr-3 mb-3" onclick="change_image(this)" src="/images/processed_images/<%= productdetails.images[2] %>" alt="Image"  style="width: 110px; height: 110px;"/>
+      <img class="mr-3 mb-3" onclick="change_image(this)" src="/images/processed_images/<%= productdetails.images[3] %>" alt="Image"  style="width: 110px; height: 110px;"/>
+
+    </div>
+    <style>
+  figure.zoom {
+background-position: 50% 50%;
+position: relative;
+width: 1000px;
+overflow: hidden;
+cursor: zoom-in;
+}
+figure.zoom img:hover {
+opacity: 0;
+}
+figure.zoom img {
+transition: opacity .5s;
+display: block;
+width: 100%;
+}
+.heart{
+border: none;
+background-color: white;
+}
+</style>
+    <div class="col-lg-7 pb-5">
+      <h3 class="font-weight-semi-bold"><%= productdetails.product_title %></h3>
+      <div class="d-flex mb-3">
+        <div class="text-primary mr-2">
+          <small class="fas fa-star"></small>
+          <small class="fas fa-star"></small>
+          <small class="fas fa-star"></small>
+          <small class="fas fa-star-half-alt"></small>
+          <small class="far fa-star"></small>
+        </div>
+        <small class="pt-1">(50 Reviews)</small>
+      </div>
+      <h3 class="font-weight-semi-bold mb-4">₹<%= productdetails.price %></h3>
+      <p class="mb-4">
+        <%= productdetails.product_description %>
+      </p>
+      <div class="d-flex mb-3">
+        <p class="text-dark font-weight-medium mb-0 mr-3">Size:</p>
+        <%= productdetails.size %>
+      </div>
+
+      <div class="d-flex align-items-center mb-4 pt-2">
+        <% if (flag) { %>
+          <% } %>
+        <button class="btn btn-primary mr-3 px-3" onclick="addToCart('<%= productdetails._id %>')">
+          <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
+        </button>
+        
+        <button
+          class="btn btn-primary mr-3 px-3"
+          onclick="addToWishlist('<%= productdetails._id %>')"
+        >
+          <i class="fa fa-shopping-cart mr-1"></i> Add To Wishlist
+        </button>
+      </div>
+      
+    </div>
+  </div>
+  <div class="row px-xl-5">
+    <div class="col">
+      <div class="nav nav-tabs justify-content-center border-secondary mb-4">
+        <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a
+        >
+        <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3"
+          >Reviews (0)</a
+        >
+      </div>
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="tab-pane-1">
+          <h4 class="mb-3">Product Description</h4>
+          <p><%= productdetails.product_description %></p>
+        </div>
+
+        <div class="tab-pane fade" id="tab-pane-3">
+          <div class="row">
+            <div class="col-md-6">
+              <h4 class="mb-4">1 review for "Colorful Stylish Shirt"</h4>
+              <div class="media mb-4">
+                <img
+                  src="img/user.jpg"
+                  alt="Image"
+                  class="img-fluid mr-3 mt-1"
+                  style="width: 45px"
+                />
+                <div class="media-body">
+                 
+                  
+                  
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+
+              <div class="d-flex my-3">
+                <p class="mb-0 mr-2">Your Rating * :</p>
+                <div class="text-primary">
+                  <i class="far fa-star"></i>
+                  <i class="far fa-star"></i>
+                  <i class="far fa-star"></i>
+                  <i class="far fa-star"></i>
+                  <i class="far fa-star"></i>
+                </div>
+              </div>
+              <form>
+                <div class="form-group">
+                  <label for="message">Your Review *</label>
+                  <textarea
+                    id="message"
+                    cols="30"
+                    rows="5"
+                    class="form-control"
+                  ></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="name">Your Name *</label>
+                  <input type="text" class="form-control" id="name" />
+                </div>
+                <div class="form-group">
+                  <label for="email">Your Email *</label>
+                  <input type="email" class="form-control" id="email" />
+                </div>
+                <div class="form-group mb-0">
+                  <input
+                    type="submit"
+                    value="Leave Your Review"
+                    class="btn btn-primary px-3"
+                  />
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Shop Detail End -->
+
+<!-- Products Start -->
+<!-- <div class="container-fluid py-5">
+  <div class="text-center mb-4">
+    <h2 class="section-title px-5">
+      <span class="px-2">You May Also Like</span>
+    </h2>
+  </div>
+  <div class="row px-xl-5">
+    <div class="col">
+      <div class="owl-carousel related-carousel">
+        
+        
+        <div class="card product-item border-0">
+          <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+            <img class="img-fluid w-100" src="img/product-3.jpg" alt="" />
+          </div>
+          <div
+            class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+            <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
+            <div class="d-flex justify-content-center">
+              <h6>₹123.00</h6>
+              <h6 class="text-muted ml-2"><del>₹123.00</del></h6>
+            </div>
+          </div>
+          <div class="card-footer d-flex justify-content-between bg-light border">
+            <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+            <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+          </div>
+        </div>
+        
+       
+      </div>
+    </div>
+  </div>
+</div> -->
+<!-- Products End -->
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+
+  <!-- <script>
+    function change_image(image){
+                 var container = document.getElementById("main-image");
+                container.src = image.src;
+            }
+            document.addEventListener("DOMContentLoaded", function(event) {
+            });
+</script> -->
+<script>
+  function change_image(image){
+  let container = document.getElementById("main-image");
+  let zoomer = document.getElementById("zoomer");
+  container.src = image.src;
+  zoomer.style.backgroundImage = "url("+image.src+")"
+}
+document.addEventListener("DOMContentLoaded", function(eventg) {
+});
+// function offZoom(e) {
+// img.style.transformOrigin = `center center`;
+// img.style.transform = "scale(1)";
+// }
+// function zoom(e){
+// var zoomer = e.currentTarget;
+// e.offsetX ? offsetX = e.offsetX : offsetX = e.touches[0].pageX
+// e.offsetY ? offsetY = e.offsetY : offsetX = e.touches[0].pageX
+// x = offsetX/zoomer.offsetWidth*100
+// y = offsetY/zoomer.offsetHeight*100
+// zoomer.style.backgroundPosition = x + '% ' + y + '%';
+// }
+</script>
+
+<!-- Back to Top -->
+<a href="#top" class="btn back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+<%- include('../layouts/userfooter.ejs'); -%>

@@ -1,0 +1,146 @@
+<%- include('../layouts/adminlayout.ejs'); -%>
+
+<div class="main ">
+
+    <div class="container mx-auto my-5" id="orderDiv">
+       
+        
+        <div class="row ">
+            
+            <div class="col-10 my-3 mx-auto" >
+                <div class=" d-flex  flex-column  py-3">
+                    <div class=" d-flex  flex-column align-items-end">
+                    <a onclick="downloadInvoice('printableArea')">
+                    
+                        <div class="btn btn-dark">Download Invoice</div>
+                    
+                    </a ><br>
+                    <div >
+                    Change Order Status To:
+                    <% if(orders.orderStatus=="Placed"){ %>
+                    <button class="btn btn-secondary" style="max-width: fit-content;">Shipped</button>
+                    <% } else if(orders.orderStatus=="Shipped") { %>
+                    <button class="btn btn-secondary" style="max-width: fit-content;">Out For Delivery</button>
+                    <% } else if(orders.orderStatus=="Out For Delivery") { %>
+                    <button class="btn btn-secondary" style="max-width: fit-content;">Delivered</button>
+                    <% } else{} %>
+                </div>
+                    </div>
+                </div>
+                <div class="container shadow  p-4 bg-light"  id="printableArea">
+                    <div class="row d-flex flex-column justify-content-center align-items-center py-5">
+                        <div class="col-12 d-flex justify-content-between">
+                            <p class="px-5"><b>Order Id</b> : <%= orders._id %></p>
+                            <p class="px-5"> <b>Order Status</b>       
+                                <% if(orders.orderStatus=="Shipped" || orders.orderStatus=="Out for delivery") { %>
+                                <span class="badge bg-primary">  <%= orders.orderStatus %></span>
+                                <% } else if(orders.orderStatus=="Delivered"){ %>
+                                <span class="badge bg-success">  <%= orders.orderStatus %></span>
+                                <% } else if(orders.orderStatus=="Cancelled"){ %>
+                                <span class="badge bg-danger">  <%= orders.orderStatus %></span>
+                                    
+                                <% } else { %>
+                                <span class="badge bg-warning">  <%= orders.orderStatus %></span>
+                                <% } %> 
+                            </p>
+                            
+                        </div>
+                        <div>
+                            <p class="px-5"><b>Order Date </b>:<%= moment(orders.orderDate).format('DD-MMMM-YYYY'); %>  <%= moment(orders.orderDate).format('hh:MM A');  %></p>
+
+                        </div>
+
+                        <hr class="bg-dark  text-center" style="width: 90%;">
+
+
+                        <div class="col-12 d-flex ">
+                            <div class="col-12  px-5">
+                                <b>SHIPPED TO</b><br>
+                            <%= orders.deliveryAddress.user_name %>,
+                            <%= orders.deliveryAddress.mobile_no %>,<br>
+                            <%= orders.deliveryAddress.house_no %>,
+                            <%= orders.deliveryAddress.village %>,
+                            <%= orders.deliveryAddress.city %>,<br>
+                            <%= orders.deliveryAddress.state %>,
+                            <%= orders.deliveryAddress.pincode %>,
+                            <%= orders.deliveryAddress.country %>
+                            <p>Phone: <%= orders.phone %></p>
+
+                        </div>  
+                        
+                        </div>
+
+                        <% orders.orderedItems.forEach(function(product){ %>
+                        <div class="col-12 px-5">
+                            <table class="table table-secondary  px-5">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Item</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Unit Price</th>
+                                    <th scope="col">Total</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <th scope="row"><img src="/images/processed_images/<%= product.productid.images[0] %>" style="max-width: 90px;"></th>
+                                    <td><%= product.productid.product_title %></td>
+                                    <td><%= product.qty %></td>
+                                    <td> ₹ <%= product.productid.price %></td>
+                                    <td>
+                                        <% let x=0 %>
+                                    <% for(let i=1; i<= product.qty;i++ ){ %>
+                                    <%  x =x + product.productid.price %>
+                                    <% } %>
+                                    ₹<%= x %>
+                                    </td>
+                                  </tr>
+                                  
+                                  
+                                </tbody>
+                              </table>
+
+                            <div class="col-4 ">
+                                
+                                
+                            </div>
+                            <div class="col-8 text-center">
+                                
+                            </div>
+                        </div>
+                        <%})%>
+                        <!-- <hr class="bg-dark  text-center" style="width: 90%;"> -->
+                       
+
+                        <div class="col-12">
+                            <div class="d-flex flex-column  px-5">
+                                <p>Payment Method: <%= orders.paymentMethod %></p>
+                                <p>Total Amount :₹<%= orders.totalAmount %></p>
+                                <% if(orders.discountPrice){ %>
+                                <p>Discount Price:₹<%= orders.discountPrice %></p>
+                                <% } %>
+                                <h5 >Amount Paid:₹<%= orders.paidAmount %></h5>
+                                
+                                
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+    </div>
+        
+        
+</div>
+<script>
+    function downloadInvoice(areaID){
+    var printContent = document.getElementById(areaID).innerHTML;
+    var originalContent = document.body.innerHTML;
+    document.body.innerHTML = printContent;
+    window.print();
+    document.body.innerHTML = originalContent;
+}
+</script>

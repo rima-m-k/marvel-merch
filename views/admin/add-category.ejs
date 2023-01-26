@@ -1,0 +1,23 @@
+<%- include('../layouts/adminlayout.ejs'); -%>
+
+<div class="main">
+  <h2>ADD CATEGORY</h2>
+  <div class="box1">
+    <p class="text-danger fw-bold mx-auto"><%=locals.message %></p>
+
+    <form method="post"action="/admin/add_category" class="mt-3" enctype="multipart/form-data" >
+      <div class="mx-auto">
+        <label>Category</label>
+        <input type="text" class="form-control1" id="category" name="categoryname" required />
+      </div>
+      <br />
+      <div class="mx-auto">
+        
+        Image <input type="file" class="form-control1" id="category_img" name="categoryImage" style="border: none;" required />
+      </div>
+      <br>
+      <button type="submit" class="btn btn-dark">Add Category</button>
+        
+    </form>
+  </div>
+</div>

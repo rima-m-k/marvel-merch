@@ -1,0 +1,75 @@
+<!-- ----------------------------------------------------------datatable----------------------------------------------------- -->
+<%- include('../layouts/adminlayout.ejs'); -%>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+<div class="main">
+  <h2>PRODUCTS</h2>
+  <div class="buttons-component mr-3"> <br> <br>
+    <a class="btn btn-success position-absolute top-10 end-10" href="/admin/add_products">Add Products</a><br><br>
+  </div>
+  <div class="table-responsive">
+    <table id="example" class="display" style="width: 100%">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Image</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Stock</th>    
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% products.forEach(function(product,i) { %>
+           <% if(product.isDeleted==false){ %>
+        <tr>
+          <th scope="row"><%= i+1 %></th>
+          <td>
+            <img src="/images/processed_images/<%= product.images[0] %>" class="image-in-product-table mb-1">
+            <img src="/images/processed_images/<%= product.images[1] %>" class="image-in-product-table mb-1"><br>
+            <img src="/images/processed_images/<%= product.images[2] %>" class="image-in-product-table mb-1">
+            <img src="/images/processed_images/<%= product.images[3] %>" class="image-in-product-table mb-1">
+          </td>
+          <td><%= product.product_title %></td>
+          <td><%= product.product_description %></td>
+          <td><%= product.product_category.categoryname %></td>
+          <td><%= product.price %></td>
+          <td><%= product.stock %></td>
+          <td>
+            <a href="/admin/edit_products/<%= product._id %>/">
+              <button class="btn btn-secondary mb-2">Edit</button>
+            </a> <br>
+              <button class="btn btn-dark" onclick="swalert('<%= product._id %>')">Delete</button>
+          </td>
+        </tr>
+        <% } %>
+       <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+
+<script>
+  $(document).ready(function () {
+    $("#example").DataTable();
+  });
+function swalert(pID) {
+  swal({
+  title: "Are you sure?",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+   window.location.href = '/admin/delete_products/'+pID;
+  }  
+});
+}
+</script>

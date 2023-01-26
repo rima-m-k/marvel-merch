@@ -1,0 +1,89 @@
+<%- include('../layouts/userheader.ejs'); -%>
+
+
+<!-- Customized Bootstrap Stylesheet -->
+<link href="css/style2.css" rel="stylesheet">
+
+<!-- Page Header Start -->
+<div class="container-fluid bg-Cultured mb-5" id="top">
+  <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+      <h1 class="font-weight-semi-bold text-uppercase mb-3">Orders</h1>
+      <div class="d-inline-flex">
+          <p class="m-0"><a href="">Home</a></p>
+          <p class="m-0 px-2">-</p>
+          <p class="m-0">View Address</p>
+      </div>
+  </div>
+</div>
+<!-- Page Header End -->
+<div class="container mx-auto my-5" id="orderDiv">
+    <div class="row">
+        <% orders1. forEach(function(order){ %>
+
+        <div class="col-12 my-3">
+            <div class="container shadow rounded p-4 bg-light" >
+                <div class="row d-flex flex-column justify-content-center align-items-center">
+                    <div class="col-12 d-flex justify-content-between">
+                        <p>Order Id : <%= order._id %></p>
+                        <p><%= order.orderStatus %></p>
+                    </div>
+                    <hr class="bg-dark  text-center" style="width: 90%;">
+                    <% order.orderedItems.forEach(function(product){ %>
+                    <div class="col-12 d-flex justify-content-around">
+                        <div class="col-4 text-center">
+                            <img src="/images/processed_images/<%= product.productid.images[0] %>" style="max-width: 90px; margin: 1px;">
+                            
+                        </div>
+                        <div class="col-8 text-center">
+                            <p><%= product.productid.product_title %></p>
+                            <p>Qty : <%= product.qty %>
+                        </div>
+                    </div>
+                    <%})%>
+                   
+                    <hr class="bg-dark  text-center" style="width: 90%;">
+
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <p>Payment Method :  <%= order.paymentMethod %></p>
+
+                                <p>Order Placed on :<%= moment(order.orderDate).format('DD-MM-YYYY'); %></p>
+                                <p>Total Price : ₹ <%= order.paidAmount %></p>
+                            </div>
+                            <div>
+                                <% if(order.orderStatus != "Cancelled"){ %>
+                                 <%   if(order.orderStatus != "Delivered"){ %>
+                                <button class="btn btn-sm btn-primary bg-dark text-danger" onclick="cancelOrder('<%= order._id %>')">cancel</button>
+                                <%}%>
+                                <%}%>
+                            </div>
+                            <script>
+                                function cancelOrder(id) {
+                                    console.log('canceller');
+                                    $.ajax({
+                                        url : '/viewOrders',
+                                        method : "put",
+                                        data : {
+                                            orderid : id
+                                        },
+                                        success : (res)=>{
+                                            $("#orderDiv").load(location.href + " #orderDiv")
+                                        }
+
+                                    })
+                                }
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% }) %>
+    </div>
+</div>
+    
+    <!-- Back to Top -->
+<a href="#top" class="btn back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+<%- include('../layouts/userfooter.ejs'); -%>

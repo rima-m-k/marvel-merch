@@ -1,0 +1,46 @@
+<%- include('../layouts/adminlayout.ejs'); -%>
+<div class="main">
+  <h2>CUSTOMERS</h2>
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered mt-5">
+      <thead>
+        <tr class="table-dark">
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Phone</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% let i=0 %> <% admin.forEach(function(user) { %>
+        <tr>
+          <% i++ %>
+          <th scope="row"><%= i %></th>
+
+          <td><%= user.firstname %> <%= user.lastname %></td>
+          <td><%= user.email %></td>
+          <td><%= user.phone %></td>
+          <% if (user.blocked) { %>
+          <td>
+            <a
+              href="/admin/unblockuser/<%=user._id %>"
+              class="btn btn-outline-success"
+              >UNBLOCK</a
+            >
+          </td>
+          <% } else { %>
+          <td>
+            <a
+              href="/admin/blockuser/<%=user._id %>"
+              class="btn btn-outline-danger"
+              >&nbsp; BLOCK &nbsp;&nbsp;
+            </a>
+          </td>
+          <% } %>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</div>

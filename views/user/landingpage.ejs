@@ -1,0 +1,243 @@
+<%- include('../layouts/userheader.ejs'); -%>
+
+<br />
+
+<!-- Customized Bootstrap Stylesheet -->
+<link href="css/style2.css" rel="stylesheet" />
+
+<!-- carousel-->
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active" id="top">
+      <img src="/images/banners/defaultbanner.jpg" class="d-block w-100" alt="...">
+      <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+        <h3 class="display-4 text-white font-weight-semi-bold mb-4">
+          MARVEL MERCHANDISE
+        </h3>
+        <a href="/search" class="btn btn-light py-2 px-3">Shop Now</a>
+
+        </div>
+    </div>
+    <% banners.forEach(function(banner) { %>
+    <div class="carousel-item ">
+      <img src="/images/processed_images/<%= banner.image %>" class="d-block w-100" alt="...">
+      <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+        <h3 class="display-4 text-white font-weight-semi-bold mb-4">
+          MARVEL MERCHANDISE
+        </h3>
+        <a href="/search" class="btn btn-light py-2 px-3">Shop Now</a>
+
+        </div>
+    </div>
+   <% }) %>
+    
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+<!-- carousel end -->
+
+
+
+<!-- Categories Start -->
+<div class="container-fluid pt-5">
+  <div class="text-center ">
+    <h2 class="section-title px-5 mb-0"><span class="px-2">Categories</span></h2>
+  </div>
+  
+  <div class="row px-xl-5 pb-3">
+    <% category.forEach(function(category) { %>
+
+    <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+      <div class="cat-item d-flex flex-column border border-secondary  rounded mb-4" style="padding: 30px" >
+        <p class="text-right"></p>
+        <a href="/showitems/<%= category._id%>" class="cat-img position-relative overflow-hidden  mb-3">
+          <img class="img-fluid" src="/images/processed_images/<%= category.categoryImage %>" alt="" >
+        </a>
+        <h5 class="font-weight-semi-bold text-center text-dark  text-uppercase m-0"><em><%= category.categoryname %></em></h5>
+      </div>
+    </div>
+
+    <%}) %>
+  </div>
+</div>
+<!-- Categories End -->
+
+
+<!-- Just arrivedProducts Start -->
+<div class="container-fluid pt-5">
+  <img src="images/shieldwall.png" style="width: 150px; height: 150px;">
+  <div class="text-center mb-4">
+    <h2 class="section-title px-5 "><span class="px-2">Just Arrived</span></h2>
+
+  </div>
+  <div class="row px-xl-5 pb-3">
+  <% products.forEach(function(product){ %>
+    <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+      <a href="/productdisplay/<%= product._id%>" class="btn btn-sm text-dark p-0">
+      <div class="card product-item border-1 border-Jet mb-4">
+        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+        <img class="img-fluid w-100" src="/images/processed_images/<%= product.images[0] %>" alt="" >
+      </div> 
+        <div class="card-body border-left border-right  bg-Cultured text-center p-0  ">
+          <h6 class="text-truncate"><b><%= product.product_title %></b></h6>
+          <div class="d-flex justify-content-center">
+            <h6>₹ <%= product.price %>.00</h6>
+          </div>
+        </div>
+        <div class="    border" >
+          
+          <a href="/productdisplay/<%= product._id%>" class="btn btn-sm text-dark p-0">
+           </a>
+        </div>
+      </div>
+    </a>
+    </div>
+    <% }) %>
+  </div>
+</div>
+
+
+<!-- Featured Start -->
+<div class="container-fluid pt-5">
+  <div class="row px-xl-5 pb-3">
+    <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+      <div class="d-flex align-items-center border mb-4" style="padding: 30px">
+        <h1 class="fa fa-check text-Jet m-0 mr-3"></h1>
+        <h5 class="font-weight-semi-bold m-0">Quality Product</h5>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+      <div class="d-flex align-items-center border mb-4" style="padding: 30px">
+        <h1 class="fa fa-shipping-fast text-Jet m-0 mr-2"></h1>
+        <h5 class="font-weight-semi-bold m-0">Free Shipping</h5>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+      <div class="d-flex align-items-center border mb-4" style="padding: 30px">
+        <h1 class="fas fa-exchange-alt text-Jet m-0 mr-3"></h1>
+        <h5 class="font-weight-semi-bold m-0">14-Day Return</h5>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+      <div class="d-flex align-items-center border mb-4" style="padding: 30px">
+        <h1 class="fa fa-phone-volume text-Jet m-0 mr-3"></h1>
+        <h5 class="font-weight-semi-bold m-0">24/7 Support</h5>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Featured End -->
+
+
+
+<a href="#top" class="btn back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+<%- include('../layouts/userfooter.ejs'); -%>
+<!-- Products End -->
+<!-- card carousel -->
+<!-- 
+<div id="myCarousel" class="carousel slide container" data-bs-ride="carousel">
+    <div class="carousel-inner w-100">
+      <div class="carousel-item active">
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+          <div class="cat-item d-flex flex-column border border-secondary  rounded mb-4" style="padding: 30px" >
+            <p class="text-right"></p>
+          </div>
+        </div>
+     </div>
+        <div class="carousel-item ">
+    <% category.forEach(function(category) { %>
+      <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+        <div class="cat-item d-flex flex-column border border-secondary  rounded mb-4" style="padding: 30px" >
+          <p class="text-right"></p>
+          <a href="/showitems/<%= category._id%>" class="cat-img position-relative overflow-hidden  mb-3">
+            <img class="img-fluid" src="/images/processed_images/<%= category.categoryImage %>" alt="" >
+          </a>
+          <h5 class="font-weight-semi-bold text-center text-dark  text-uppercase m-0"><em><%= category.categoryname %></em></h5>
+        </div>
+      </div>
+       <% }) %>
+        </div>
+        
+       
+        
+        
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+<style>
+  #myCarousel {
+    margin-top: 50px;
+}
+
+@media (max-width: 768px) {
+    .carousel-inner .carousel-item>div {
+        display: none;
+    }
+
+    .carousel-inner .carousel-item>div:first-child {
+        display: block;
+    }
+}
+
+.carousel-inner .carousel-item.active,
+.carousel-inner .carousel-item-start,
+.carousel-inner .carousel-item-next,
+.carousel-inner .carousel-item-prev {
+    display: flex;
+}
+
+@media (min-width: 768px) {
+
+    .carousel-inner .carousel-item-right.active,
+    .carousel-inner .carousel-item-next,
+    .carousel-item-next:not(.carousel-item-start) {
+        transform: translateX(25%) !important;
+    }
+
+    .carousel-inner .carousel-item-left.active,
+    .carousel-item-prev:not(.carousel-item-end),
+    .active.carousel-item-start,
+    .carousel-item-prev:not(.carousel-item-end) {
+        transform: translateX(-25%) !important;
+    }
+
+    .carousel-item-next.carousel-item-start,
+    .active.carousel-item-end {
+        transform: translateX(0) !important;
+    }
+
+    .carousel-inner .carousel-item-prev,
+    .carousel-item-prev:not(.carousel-item-end) {
+        transform: translateX(-25%) !important;
+    }
+}
+</style>
+ <script>
+  $('.carousel .carousel-item').each(function () {
+var minPerSlide = 4;
+var next = $(this).next();
+if (!next.length) {
+next = $(this).siblings(':first');
+}
+next.children(':first-child').clone().appendTo($(this));
+
+for (var i = 0; i < minPerSlide; i++) { next=next.next(); if (!next.length) { next=$(this).siblings(':first'); } next.children(':first-child').clone().appendTo($(this)); } });
+ </script> -->
+<!-- end card carousel -->
+

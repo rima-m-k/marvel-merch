@@ -1,0 +1,304 @@
+<%- include('../layouts/userheader.ejs'); -%>
+
+<!-- Customized Bootstrap Stylesheet -->
+<link href="css/style2.css" rel="stylesheet" />
+
+<!-- Page Header Start -->
+<div class="container-fluid bg-LightGray mb-5" id="top">
+  <div
+    class="d-flex flex-column align-items-center justify-content-center"
+    style="min-height: 300px"
+  >
+    <h1 class="font-weight-semi-bold text-uppercase mb-3">Checkout</h1>
+    <div class="d-inline-flex">
+      <p class="m-0"><a href="">Home</a></p>
+      <p class="m-0 px-2">-</p>
+      <p class="m-0">Checkout</p>
+    </div>
+  </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Checkout Start -->
+<div class="container-fluid  px-5">
+  <form method="post" action="/placeOrder" id="checkoutForm">
+    <div class="row px-xl-5">
+      <div class="col-lg-8">
+        <div class="mb-4">
+          <h3 class="font-weight-semi-bold mb-4">SHIPPING ADDRESS</h3>
+          <div class="row d-flex pb-5">
+            <div class="text-center mb-4">
+              <h4 class=" section-title px-5 "><span class="px-2 pt-3">Select an address</span></h4>
+          
+            </div>
+            <% Address.forEach(function(address) { %>
+            <div class="d-flex col-12 col-md-6">
+              <input type="radio" name="addressId" value="<%= address._id %>" class=" "  />
+              <div class="mt-3 p-1">
+                <div class="card border shadow mt-5">
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      <%= address.address_name %>
+                    </h5>
+                    <p class="card-text">
+                      <%= address.user_name %> , &nbsp;
+                       <%= address.mobile_no %> , &nbsp;
+                      <%= address.house_no %>  <%= address.house_no
+                      %>, &nbsp; <%= address.village %>  <%=
+                      address.village %>, &nbsp;
+                       <%= address.landmark %> , &nbsp;
+                       <%= address.city %>  <br />
+                      PIN:<%= address.pincode %>  , &nbsp;
+                       <%= address.state %> &nbsp;
+                       <%= address.country %>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% }) %>
+          </div>
+          <div class="text-center mb-4">
+            <h4 class="section-title px-5 "><span class="px-2">or</span></h4>
+          </div>          
+
+            <!--  -->
+            <p class="text-center mb-4">
+              <a class="btn btn-secondary " data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                Add new address
+              </a>
+             
+            </p>
+            <div class="collapse" id="collapseExample">
+              <div class="card card-body">
+               
+                  <div class="row">
+                      <div class="col-md-6 form-group">
+                          <label>Address Name<span style="color: red;"> *</span> </label>
+                          <input class="form-control" type="text" name="address_name" >
+                      </div>
+                      <div class="col-md-6 form-group">
+                          <label>Your Name <span style="color: red;"> *</span>  </label>
+                          <input class="form-control" type="text" name="user_name" >
+                      </div>
+                      <div class="col-md-6 form-group">
+                          <label>Flat/House Number/Building <span style="color: red;"> *</span> </label>
+                          <input class="form-control" type="text" name='house_no' >
+                      </div>
+                      
+                      <div class="col-md-6 form-group">
+                          <label>Mobile Number <span style="color: red;"> *</span> </label>
+                          <input class="form-control" type="number" name="mobile_no" >
+      
+                      </div>
+                      <div class="col-md-6 form-group">
+                          <label>Area/Street/Village <span style="color: red;"> *</span> </label>
+                          <input class="form-control" type="text"  name="village"  >
+                      </div>
+                       <div class="col-md-6 form-group">
+                          <label>Country/Region <span style="color: red;"> *</span> </label>
+                          <input class="form-control" type="text" name="country" >
+                      </div>
+                      <div class="col-md-6 form-group">
+                          <label>Town/City <span style="color: red;"> *</span> </label>
+                          <input class="form-control" type="text" name="city" >
+                      </div>
+                      <div class="col-md-6 form-group">
+                          <label>State <span style="color: red;"> *</span> </label>
+                          <input class="form-control" type="text" name="state" >
+                      </div>
+                      
+                      
+                      
+                      <div class="col-md-6 form-group">
+                          <label>Landmark <span style="color: red;"> *</span> </label>
+                          <input class="form-control" type="text" name="landmark" >
+                      </div>
+                     
+                      <div class="col-md-6 form-group">
+                          <label>PIN Code <span style="color: red;"> *</span> </label>
+                          <input class="form-control" type="number" name="pincode" >
+                      </div>
+                     
+                  </div>
+                        
+               </div>
+            </div>
+        <!--  -->
+         
+        </div>
+
+        <div class="card border-secondary my-5">
+          <div class="card-header bg-EerieBlack border-0">
+            <h4 class="font-weight-semi-bold m-0">Order Summary</h4>
+          </div>
+          <div class="card-body">
+            <h5 class="font-weight-medium mb-3">Products</h5>
+            <hr class="mt-0" />
+
+            <% cartlist.forEach(function(items) { %>
+            <div class="d-flex justify-content-around align-items-center">
+              <p>
+                <img
+                  src="/images/processed_images/<%= items.productImage[0][0]%>"
+                  style="width: 60px"
+                />
+                <input
+                  hidden
+                  value="<%=items.productImage[0][0]%>"
+                  name="productImage"
+                />
+
+                &nbsp;&nbsp; <%= items.productName %>
+              </p>
+              <input hidden value="<%=items.productId%>" name="productID" />
+
+              <input hidden value="<%=items.productName%>" name="productName" />
+              <p>Quantity:<%= items.productQuatity %></p>
+              <input hidden value  ="<%=items.productQuatity%>" name="productQuantity"/>
+
+              <p>Rs.<%= items.totalPrice %></p>
+            </div>
+            <hr class="mt-0" />
+            <% }) %>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card border-secondary mb-3">
+          <div class="card-header bg-EerieBlack border-0">
+            <h4 class="font-weight-semi-bold m-0">Price Details</h4>
+          </div>
+          <div class="card-body">
+            <hr class="mt-0" />
+
+            <div class="input-group mb-5 d-flex flex-column">
+              <input id="couponInput" type="text" class="form-control w-100 p-4" placeholder="Coupon Code" onkeyup="checkCoupon()">
+              <span id="couponDetails"></span>
+              
+            </div>
+            
+
+            <div class="d-flex justify-content-between mb-3 pt-1">
+              <h6 class="font-weight-medium">Subtotal</h6>
+              <h6 class="font-weight-medium">Rs.<%= subtotal %></h6>
+              <input hidden  type="text" value="<%=subtotal%>" name="Subtotal" />
+            </div>
+            <div class="d-flex justify-content-between">
+              <h6 class="font-weight-medium" >Discount</h6>
+              <h6 class="font-weight-medium" id="discount">0</h6>
+              <input type="text" hidden value="" id="hiddenDiscount" name="discount">
+            </div>
+            <div class="d-flex justify-content-between">
+              <h6 class="font-weight-medium">Shipping</h6>
+              <h6 class="font-weight-medium">Free</h6>
+            </div>
+          </div>
+          <div class="card-footer border-secondary bg-transparent">
+            <div class="d-flex justify-content-between mt-2">
+              <h5 class="font-weight-bold">Payable</h5>
+              <h5 class="font-weight-bold" id="totalPrice"><%= subtotal %></h5>
+              <input type="text"  hidden value="<%= subtotal %>" id="hiddenTprice" name="totalPrice">
+              <input hidden value="<%=subtotal%>" name="Payable" />
+            </div>
+          </div>
+        </div>
+        <div class="card border-secondary mb-5">
+          <div class="card-header bg-EerieBlack  border-0">
+            <h4 class="font-weight-semi-bold m-0">Payment</h4>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <div class="custom-control custom-radio">
+                <input
+                  type="radio"
+                  class="custom-control-input"
+                  name="paymentMethod"
+                  value="paypal"
+                  id="paypal"
+                  required
+                />
+                <label class="custom-control-label" for="paypal">Paypal</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="custom-control custom-radio">
+                <input
+                  type="radio"
+                  class="custom-control-input"
+                  name="paymentMethod"
+                  value="COD"
+                  id="COD"
+                />
+                <label class="custom-control-label" for="COD"
+                  >Cash On Delivery</label
+                >
+              </div>
+            </div>
+          </div>
+          <!-- <div class="card-footer  ">
+            <button type="submit" class=" " style="text-decoration-color: black;" onclick="placeorder()"> Place Order</button>
+
+          </div> -->
+          <div class="card-footer border-secondary ">
+            <button type="submit" class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3" onclick="placeorder()"> Place Order</button>
+          </div> 
+        </div>
+      </div>
+    </div>
+  </form>
+  <script>
+    function checkCoupon() {
+      
+      $.ajax({
+        url : '/checkout',
+        method : 'put',
+        data : {
+          code : $('#couponInput').val()
+        } ,
+        success : (res)=>{
+          $('#couponDetails').html(res.data.correctCoupon)
+          $('#discount').html(res.data.discount)
+          $('#hiddenDiscount').val(res.data.discount)
+          $('#hiddenTprice').val(res.data.totalPrice)
+          $('#totalPrice').html(res.data.totalPrice)
+
+
+        }
+      })
+    }
+function placeorder() {
+  
+
+    $("#checkoutForm").submit((e) => {
+    e.preventDefault();
+    let x= $("#checkoutForm").serialize();
+      if(x.addressId != '' || ((x.address_name !='') && (x.user_name !='') && (x.house_no !='') && (x.mobile_no !='') && (x.village !='') && (x.country !='') && (x.city !='') && (x.state !='') && (x.landmark !='') && (x.pincode !=''))){
+        $.ajax({
+      url: "/placeOrder",
+      method: "post",
+      data: $("#checkoutForm").serialize(),
+      success: (response) => {
+        if(response.data == 1){
+        alert("ordere Placed Successfully");
+        location.replace = "/orderSuccess";
+        }else{
+          location.href = (response.data)
+        }
+
+      },
+    });
+      }else{
+        alert("Please add complete addess details or select from available addresses ");
+      }
+  
+  });
+}
+  </script>
+</div>
+<!-- Checkout End -->
+
+<!-- Back to Top -->
+<a href="#top" class="btn back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+<%- include('../layouts/userfooter.ejs'); -%>
