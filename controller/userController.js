@@ -1291,22 +1291,25 @@ async function shop(req, res) {
     let activeSession ;
     (req.session.usersession)?activeSession=1:activeSession=0;
     req.session.displayProducts = await Product.find({ isDeleted: false });
-    allProducts = req.session.displayProducts 
-    return res.render("user/shop", { allProducts ,activeSession});
+    // allProducts = req.session.displayProducts
+    return res.render("user/shop", { allProducts:req.session.displayProducts ,activeSession}); 
   } catch (error) {
     return res.redirect("/errorPage");
   }
 }
 
-async function search (req,res) {
+async function search (req,res) { 
   try {
+  console.log("searched Products start      "+req.session.displayProducts.length); 
   const searchTerm = req.query.searchInput;
-  // console.log("searchTerm"+searchTerm); 
+  console.log("searchTerm       "+searchTerm); 
    let allProducts = await Product.find({product_title: { $regex: `${searchTerm}`, $options: "i" }}); 
-  // console.log("searched Products"+allProducts); 
-  req.session.displayProducts = allProducts
+   req.session.displayProducts = allProducts
+  console.log("searched Products end    "+req.session.displayProducts.length); 
+  
     res.json({
-     success:1
+     success:1 ,
+     searchedProducts:allProducts
     })
   } catch (error) {
     console.log(error) 
