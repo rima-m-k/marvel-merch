@@ -22,21 +22,29 @@ dotenv.config();
 async function landingPage(req, res) {
   try {
     let category = await Category.find();
-    let products = await Product.find().sort({$natural:-1}).limit(16);
+    let products = await Product.find({isDeleted: false}).sort({$natural:-1}).limit(16);
     let banners = await Banner.find({ inUse: true, isDeleted: false });
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
-    return res.render("user/landingpage", { category, products, banners ,activeSession});
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
+    return res.render("user/landingpage", { category, products, banners ,activeSession,showName});
   } catch (error) {
     return res.redirect("/errorPage");
   }
 }
 
-function userSignup(req, res) {
+async function userSignup(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
-    return res.render("user/signup",{activeSession});
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
+    return res.render("user/signup",{activeSession,showName});
   } catch (error) {
     return res.redirect("/errorPage");
   }
@@ -44,11 +52,15 @@ function userSignup(req, res) {
 
 async function postuserSignup(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
      let user = await User.findOne({ email: req.body.email });
     if (user) {
-      res.render("user/signup", { message: "email already taken" ,activeSession});
+      res.render("user/signup", { message: "email already taken" ,activeSession,showName});
     } else {
       user = new User({
         firstname: req.body.firstname,
@@ -78,12 +90,12 @@ async function postuserSignup(req, res) {
       transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
           console.log(error);
-          res.render("user/signup", { message: "Email doesn't exist",activeSession });
+          res.render("user/signup", { message: "Email doesn't exist",activeSession ,showName});
         } else {
           console.log("Email sent" + info.response);
           console.log(OTP);
           
-          return res.render("user/otp",{activeSession});
+          return res.render("user/otp",{activeSession,showName});
         }
       });
     }
@@ -94,8 +106,12 @@ async function postuserSignup(req, res) {
 
 async function postverifyotp(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
     const OTP = req.session.OTP
     let user = req.session.createUser
     if (OTP === req.body.otp_code) {
@@ -114,18 +130,22 @@ async function postverifyotp(req, res) {
       await wishlistObj.save();
       return res.redirect("/");
     } else {
-      return res.render("user/otp", { message: "Incorrect OTP" ,activeSession});
+      return res.render("user/otp", { message: "Incorrect OTP" ,activeSession,showName});
     }
   } catch (error) {
     return res.redirect("/errorPage");
   }
 }
 
-function login(req, res) {
+async function login(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
-    return res.render("user/login",{activeSession});
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
+    return res.render("user/login",{activeSession,showName});
   } catch (error) {
     return res.redirect("/errorPage");
   }
@@ -133,14 +153,18 @@ function login(req, res) {
 
 async function postlogin(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
     let user = await User.findOne({ email: req.body.email });
     if (user == null) {
-      return res.render("user/login", {message: "user not found, please signup",activeSession});
+      return res.render("user/login", {message: "user not found, please signup",activeSession,showName});
     } else {
       if (user.blocked === true) {
-        return res.render("user/login", {message: "This email id has been blocked",activeSession});
+        return res.render("user/login", {message: "This email id has been blocked",activeSession,showName});
       } else {
         const comparepassword = await bcryptjs.compare(
           req.body.password,
@@ -151,7 +175,7 @@ async function postlogin(req, res) {
           req.session.usersession = user._id;
           return res.redirect("/");
         } else {
-          return res.render("user/login", { message: "Incorrect  password",activeSession });
+          return res.render("user/login", { message: "Incorrect  password",activeSession ,showName});
         }
       }
     }
@@ -160,11 +184,15 @@ async function postlogin(req, res) {
   }
 }
 
-function forgotpassword(req, res) {
+async function forgotpassword(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
-    return res.render("user/forgotpassword",{email:null,activeSession});
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
+    return res.render("user/forgotpassword",{email:null,activeSession,showName});
   } catch (error) {
     return res.redirect("/errorPage");
   }
@@ -172,8 +200,12 @@ function forgotpassword(req, res) {
 
 async function getemail(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
     let UserForFP = User.findOne({ email: req.body.emailForForgotPassword });
     req.session.UserForFP = UserForFP
      let email=UserForFP.email
@@ -184,7 +216,7 @@ async function getemail(req, res) {
       service: " gmail",
       auth: {
         user: "marvelmerch806@gmail.com",
-        pass: "yzdjivmydvsuvgbd",
+        pass: "yzdjivmydvsuvgbd", 
       },
     });
     console.log(req.body.emailForForgotPassword);
@@ -200,7 +232,7 @@ async function getemail(req, res) {
       } else {
         console.log("Email sent" + info.response);
         console.log(otpForForgotPassword);
-        return res.render("user/forgotpassword",{email,activeSession});
+        return res.render("user/forgotpassword",{email,activeSession,showName});
       }
     });
   } catch (error) {
@@ -208,15 +240,19 @@ async function getemail(req, res) {
   }
 }
 
-function postforgotpassword(req, res) {
+async function postforgotpassword(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
     otpForForgotPassword = req.session.otpForForgotPassword
     if (otpForForgotPassword === req.body.FPOtp) {
-      return res.render("user/changepassword",{activeSession});
+      return res.render("user/changepassword",{activeSession,showName});
     } else {
-      res.render("user/forgotpassword", { message: "invalid OTP",activeSession });
+      res.render("user/forgotpassword", { message: "invalid OTP",activeSession ,showName});
     }
   } catch (error) {
     return res.redirect("/errorPage");
@@ -225,8 +261,12 @@ function postforgotpassword(req, res) {
 
 async function postchangepassword(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
     UserForFP  = req.session.UserForFP 
 
     if (req.body.changepassword === req.body.confirmpassword) {
@@ -241,7 +281,7 @@ async function postchangepassword(req, res) {
       console.log("password reset");
       return res.redirect("/");
     } else {
-      return res.render("user/changepassword", {message: "passwords must be same",activeSession});
+      return res.render("user/changepassword", {message: "passwords must be same",activeSession,showName});
     }
   } catch (error) {
     return res.redirect("/errorPage");
@@ -251,8 +291,12 @@ async function postchangepassword(req, res) {
 async function productdisplay(req, res) {
   try {
     // if(req.session.usersession){
-      let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
+      let activeSession =0;
+      let showName = null;
+      if(req.session.usersession){
+      activeSession=1;
+       showName = await User.find({_id:req.session.usersession},{firstname:1});
+      }
     let flag;
     productdetails = await Product.findById(req.params._id);
     if (req.session.usersesion) {
@@ -260,7 +304,7 @@ async function productdisplay(req, res) {
     } else {
       flag = false;
     }
-    return res.render("user/product-details", { productdetails, flag,activeSession });
+    return res.render("user/product-details", { productdetails, flag,activeSession,showName });
     // }
   } catch (error) {
     return res.redirect("/errorPage");
@@ -269,12 +313,16 @@ async function productdisplay(req, res) {
 
 async function showitems(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
     const categoryID = req.params._id;
     let items = await Product.find({ product_category: categoryID });
     let category = await Category.find({ _id: categoryID });
-    return res.render("user/product-list", { items, category ,activeSession});
+    return res.render("user/product-list", { items, category ,activeSession,showName});
   } catch (error) {
     return res.redirect("/errorPage");
   }
@@ -282,8 +330,12 @@ async function showitems(req, res) {
 
 async function showcart(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
     let userId = req.session.usersession;
     const cartlist = await Cart.aggregate([
       {
@@ -334,7 +386,7 @@ async function showcart(req, res) {
       acc = acc + cur.productQuatity;
       return acc;
     }, 0);
-    return res.render("user/cart", { cartlist, subtotal, totalOfQuantity,activeSession ,flag});
+    return res.render("user/cart", { cartlist, subtotal, totalOfQuantity,activeSession,showName ,flag});
   } catch (error) {
     return res.redirect("/errorPage");
   }
@@ -564,8 +616,12 @@ async function couponCheck (req, res) {
 }
 async function checkout(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
     let userId = req.session.usersession;
 
     let address = await User.find(
@@ -618,18 +674,23 @@ async function checkout(req, res) {
       subtotal,
       cartlist,
       totalOfQuantity,
-      activeSession
+      activeSession,
+      showName
     });
   } catch (error) {
     return res.redirect("/errorPage");
   }
 }
 
-function profile(req, res) {
+async function profile(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
-    return res.render("user/profile",{activeSession});
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
+    return res.render("user/profile",{activeSession,showName});
   } catch (error) {
     return res.redirect("/errorPage");
   }
@@ -637,25 +698,33 @@ function profile(req, res) {
 
 async function showAddress(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
     let address = await User.find(
       { _id: req.session.usersession },
       { addresses: 1 }
     );
     const Address = address[0].addresses;
 
-    return res.render("user/user-address", { Address ,activeSession});
+    return res.render("user/user-address", { Address ,activeSession,showName});
   } catch (error) {
     return res.redirect("/errorPage");
   }
 }
 
-function addAddress(req, res) {
+async function addAddress(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
-    return res.render("user/add-address", { message: null ,activeSession});
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
+    return res.render("user/add-address", { message: null ,activeSession,showName});
   } catch (error) {
     return res.redirect("/errorPage");
   }
@@ -663,12 +732,17 @@ function addAddress(req, res) {
 
 async function postAddAddress(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
     if (isNaN(req.body.mobile_no) && isNaN(req.body.pincode)) {
       return res.render("user/add-address", {
         message: "please enter correct mobile number and pin number",
-        activeSession
+        activeSession,
+        showName
       });
     } else {
       await User.updateOne(
@@ -700,8 +774,12 @@ async function postAddAddress(req, res) {
 
 async function editAddress(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
     let address = await User.find({ _id: req.session.usersession });
 
     const Address = address[0].addresses;
@@ -712,7 +790,8 @@ async function editAddress(req, res) {
 
     return res.render("user/editaddress", {
       address: Address[selectedAddress],
-      activeSession
+      activeSession,
+      showName
     });
   } catch (error) {
     return res.redirect("/errorPage");
@@ -1027,7 +1106,7 @@ console.log(req.body)
           );
         }
 
-        await Cart.updateOne(
+        await Cart.updateOne( 
           { userid: mongoose.Types.ObjectId(req.session.usersession) },
           {
             $set: { product: [] },
@@ -1048,14 +1127,19 @@ console.log(req.body)
 
 async function orderList(req,res){
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
     const orders1 = await Order.find({
       userId: req.session.usersession,
     }).populate("orderedItems.productid").sort({orderDate : -1})
     // console.log(orders1);
 
-    return res.render("user/orderlist", { orders1,moment ,activeSession});  } catch (error) {
+    return res.render("user/orderlist", { orders1,moment ,activeSession,showName}); 
+   } catch (error) {
     console.log(error);
     return res.redirect("/errorPage");
 
@@ -1063,36 +1147,48 @@ async function orderList(req,res){
   } 
 }
 
-function orderSuccess(req, res) {
+async function orderSuccess(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
-    return res.render("user/order-success",{activeSession});
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
+    return res.render("user/order-success",{activeSession,showName});
   } catch (error) {
     return res.redirect("/errorPage");
   }
 }
 
 
-function orderFail(req, res) {
+ async function orderFail(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
-    return res.render("user/order-fail",{activeSession});
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
+    return res.render("user/order-fail",{activeSession,showName});
   } catch (error) {
     return res.redirect("/errorPage");
   }
 }
 async function viewOrders(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
     const orders1 = await Order.find({
       userId: req.session.usersession,
     }).populate("orderedItems.productid").sort({orderDate : -1})
     // console.log(orders1);
 
-    return res.render("user/viewOrders", { orders1,moment ,activeSession});
+    return res.render("user/viewOrders", { orders1,moment ,activeSession,showName});
   } catch (error) {
     return res.redirect("/errorPage");
   }
@@ -1217,8 +1313,12 @@ async function moveToCart(req, res) {
 
 async function showWishlist(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
     const wishlist = await Wishlist.aggregate([
       {
         $match: {
@@ -1244,7 +1344,7 @@ async function showWishlist(req, res) {
         },
       },
     ]);
-    return res.render("user/wishlist", { wishlist ,activeSession});
+    return res.render("user/wishlist", { wishlist ,activeSession,showName});
   } catch (error) {
     return res.redirect("/errorPage");
   }
@@ -1252,11 +1352,15 @@ async function showWishlist(req, res) {
 
 async function loginSecurity(req,res){
   try{
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
     const user = await User.findOne({_id:req.session.usersession})
 
-    return res.render('user/login-security',{user,activeSession})
+    return res.render('user/login-security',{user,activeSession,showName})
   }catch(error){
     return res.redirect("/errorPage");
 
@@ -1266,19 +1370,36 @@ async function loginSecurity(req,res){
 async function postLoginSecurity(req,res){
   try{
     console.log(req.body);
-    currentUser = await User.findById(req.body.userId);
-    const comparepassword = await bcryptjs.compare(
-      req.body.current_password,
-      currentUser.password
-    );
-    console.log(comparepassword);
-if(comparepassword){
-res.json({data:"match"})
-}else{
-  res.json({data:"notmatch"})
-}
-let enteredOTP = req.body.form_data.Otp
-console
+
+   let  formData = req.body.formData;
+  let x= await User.updateOne({_id:formData.UID},
+    {
+      $set:{
+      firstname:formData.firstname,
+      lastname:formData.lastname,
+      phone:formData.phone,
+      }
+    })
+console.log(x)
+    userDetails = await User.findById({_id:formData.UID})
+    console.log(userDetails);
+    res.json({
+      success:1,
+      user:{firstname:userDetails.firstname,lastname:userDetails.lastname,phone:userDetails.phone},
+    })
+
+//     currentUser = await User.findById(req.body.userId);
+//     const comparepassword = await bcryptjs.compare(
+//       req.body.current_password,
+//       currentUser.password
+//     );
+//     console.log(comparepassword);
+// if(comparepassword){
+// res.json({data:"match"})
+// }else{
+//   res.json({data:"notmatch"})
+// }
+// let enteredOTP = req.body.form_data.Otp
 
 
   }catch(error){
@@ -1288,12 +1409,17 @@ console
 }
 async function shop(req, res) {
   try {
-    let activeSession ;
-    (req.session.usersession)?activeSession=1:activeSession=0;
+    let activeSession =0;
+    let showName = null;
+    if(req.session.usersession){
+    activeSession=1;
+     showName = await User.find({_id:req.session.usersession},{firstname:1});
+    }
     req.session.displayProducts = await Product.find({ isDeleted: false });
-    // allProducts = req.session.displayProducts
-    return res.render("user/shop", { allProducts:req.session.displayProducts ,activeSession}); 
+    let allCategory = await Category.find();
+    return res.render("user/shop", { allProducts:req.session.displayProducts ,activeSession,showName,allCategory}); 
   } catch (error) {
+    console.log(error)
     return res.redirect("/errorPage");
   }
 }
@@ -1317,6 +1443,45 @@ async function search (req,res) {
     
   }
 
+}
+
+async function filter(req,res){
+  try {
+   let categoryID = req.body.categoryID
+   console.log(categoryID)
+   filteredProducts = await Product.find({product_category:categoryID,isDeleted:false})
+   console.log(filteredProducts.product_title);
+   res.json({
+    filteredProducts:filteredProducts,
+   })
+    
+  } catch (error) {
+    console.log(error);
+    return res.redirect("/errorPage");
+  }
+}
+
+async function sort(req,res){
+  try {
+
+ let criteria = req.body.criteria;
+ let sortedProducts;
+ if(criteria==='A-Z'){
+   sortedProducts = await Product.find({isDeleted:false}).sort({product_title:1}).collation({ locale: "en", caseLevel: true })
+ }else if(criteria==='PLtH'){
+  sortedProducts = await Product.find({isDeleted:false}).sort({price:1})
+ }else if(criteria === 'PHtL'){
+  sortedProducts = await Product.find({isDeleted:false}).sort({price:-1})
+ }else{
+  console.log(criteria);
+ }
+ res.json({
+  success:2,
+  sortedProducts:sortedProducts})
+
+  } catch (error) {
+    return res.redirect("/errorPage");
+  }
 }
 function errorPage(req, res) {
   return res.render("user/500page");
@@ -1371,6 +1536,8 @@ module.exports = {
   postLoginSecurity,
   moveToCart,
   search,
+  sort,
+  filter,
   errorPage,
   logout,
   cancelOrder,

@@ -16,7 +16,7 @@ router.route('/cart').get(isLoggedIn,userController.showcart);
 router.route('/addtocart/:_id').get(userController.addToCart);
 router.route('/change-product-quantity').post(isLoggedIn,userController.changeProductQuantity);
 router.route('/remove-cart-item').post(isLoggedIn,userController.removeCartItem);
-router.route('/shop').get(userController.shop);
+router.route('/shop').get(userController.shop).post(userController.sort).put(userController.filter);
 router.route('/search').put(userController.search);
 
 router.route('/checkout').get(isLoggedIn,userController.checkout).put(isLoggedIn,userController.couponCheck)

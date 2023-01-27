@@ -3,10 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Marvel Merch</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     
-    <script src="https://kit.fontawesome.com/4ec23d40f5.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://kit.fontawesome.com/4ec23d40f5.js" crossorigin="anonymous"></script> -->
     <base href="/" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
 
@@ -56,9 +57,22 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/profile">
+            <% if (activeSession===0) { %>
+              <a class="nav-link" href="/profile">
               <img src="images/profile_icon.png" id="profile_icon" />
-            </a>
+            <% }else {  %>
+              <div class="dropdown">
+                <button class="btn rounded bg-transparent text-white border dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                  <%= showName[0].firstname %>
+                </button>
+                <ul class="dropdown-menu bg-light" aria-labelledby="dropdownMenuButton1">
+                  <li><a class="dropdown-item text-dark" href="/loginSecurity">Profile</a></li>
+                  <li><a class="dropdown-item text-dark" href="/viewOrders">Orders</a></li>
+                  <li><a class="dropdown-item text-dark" href="/logout">Logout</a></li>
+                </ul>
+              </div>
+              <% } %>
+            </a> 
           </li>
         </ul>
         

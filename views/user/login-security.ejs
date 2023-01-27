@@ -8,13 +8,136 @@
     <br>
     <br>
     <br>
-    <div class="row ">
-      <div class="col-md-3 col-4 mt-3"></div>
-      <div class="col-md-3 col-4 mt-3">
+   <div class="row d-flex flex-column align-items-center">
+      <div class="col-md-6 col-6 mt-3 justify-content-center align-items-center">
+        <div class="border shadow rounded m-3 p-3 bg-white">
+<form class=" mx-auto justify-content-center d-flex" id="profileForm">
+<div class="justify-content-center">
+  <h2 class="float-left">Profile</h2><br><br>
+  
+  First name 
+  <input type="text" value="<%= user.firstname %>" class="p-2 m-2" name="firstname" id="firstname"><br>
+
+  Last name
+  <input type="text" value="<%= user.lastname %> " class="p-2 m-2" name="lastname" id="lastname"><br>
+
+  phone
+  <input type="text" value="<%= user.phone %>" class="p-2 m-2" name="phone" id="phone"><br>
+  <input type="text" value="<%= user._id %>" name="UID" hidden>
+  <button type="submit" class="btn btn-secondary my-3" onclick="profileUpdate()">Update</button><br>
+
+</div>
+
+</form>
+</div>
+
+      </div>
+<script>
+function profileUpdate() {
+  $("#profileForm").submit((e) => {
+    e.preventDefault();
+    var data = $("#profileForm").serialize();
+    $.ajax({
+  url:'/loginSecurity',
+  method:'post',
+  data:{
+    formData: $("#profileForm").serialize();,
+  },
+  success:(res)=>{
+    console.log(res)
+    if(res.success ==1){
+    alert("profile updated successfully");
+    $('#firstname').val(res.user.firstname);
+    $('#lastname').val(res.user.lastname);
+    $('#phone').val(res.user.phone);
+
+    }
+  }
+})
+})
+
+
+
+}
+</script>
+
+
+      <div class="col-md-6 col-6 mt-3 justify-content-center align-items-center">
+        <div class="border shadow rounded m-3 p-3 bg-white">
+<form class=" mx-auto justify-content-center d-flex">
+<div class="justify-content-center">
+  <h2>Address</h2>
+  <p>
+  <b><%=user.addresses[0].address_name %></b>  ,<br>
+    <%=user.addresses[0].house_no %>,<br>
+    <%=user.addresses[0].village %>,
+    <%=user.addresses[0].country %>,<br>
+    <%=user.addresses[0].city %>,
+    <%=user.addresses[0].state %>,<br>
+    Pin:<%=user.addresses[0].pincode %>,
+   </p>
+   <a href="/addresses" class="text-decoration-none float-end ">view all addresses</a>
+</div>
+
+</form>
+</div>
+
+      </div>
+
+      <div class="col-md-6 col-6 mt-3 justify-content-center align-items-center">
+        <div class="border shadow rounded m-3 p-3 bg-white">
+<div class="justify-content-center">
+  <h2>Security</h2>
+  <form>
+  email 
+  <input type="text" value="<%= user.email %>" class="p-2 m-2" >
+  <button type="button" class="btn btn-dark"  id="submitButton" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    Change email
+    </button> <br>
+    <!-- modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Enter Password</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" name="Otp">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" >Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<form>
+  Current Password
+  <input type="password" name="current_password" placeholder="current password" class="p-2 m-2" onkeyup="checkPswd('<%= user._id %>')" id="current_password"><br>
+  <span id="message" class=" text-center" > </span>
+
+  New Password
+  <input type="password" name="new_passwordrd1" placeholder="Type new password" class="p-2 m-2" id="new_passwordrd1" onkeyup="isSame()" ><br>
+
+  Re-type New Password
+  <input type="password" name="new_passwordrd2" placeholder="Re-type  password" class="p-2 m-2" id="new_passwordrd2" onkeyup="isSame()" ><br>
+  <span id="confirmPasswordErrorMessage"></span>
+  <button type="submit" class="btn btn-secondary">Change Password</button>
+
+</form>
+</div>
+
+</div>
+
+      </div>
+      </div>
+      <!--  <div class="col-md-3 col-4 mt-3">
 
         <div class="profile d-flex flex-row border shadow rounded m-3 p-3 bg-white">
           <div class="l p-4">
-            <h4 >Profile</h4><br>
             <img src="#" style="max-width: 100px; max-height :100px;">
             <input type="button" name="profilePic">
           </div>
@@ -32,25 +155,25 @@
               </h5>
               <a href="#" class="text-decoration-none float-end">change phone</a>
             </div>
-          </div>
+          </div> -->
           <!-- profile(first name,lastname,profile photo) -->
-        </div>
+       <!-- </div>
 
         <div class="email border  shadow rounded m-3 p-3 bg-white">
           <h4>Email address</h4>
           <%= user.email %><br>
-            <a href="#" class="text-decoration-none float-end">change email</a>
+            <a href="#" class="text-decoration-none float-end">change email</a>-->
 
             <!-- Email address (validation,otp) -->
-        </div>
+        <!-- </div>
 
       </div>
       <div class="col-md-4 col-4 mt-3">
         <div class="address d-flex flex-column border shadow rounded m-3 p-3 bg-white">
 
-          <h4>Addresses</h4>
+          <h4>Addresses</h4>-->
           <!-- <span class="badge bg-secondary " style="max-width: fit-content; max-height: fit-content;">Default</span> -->
-          <p>
+        <!--   <p>
            <%=user.addresses[0].address_name %>,
            <%=user.addresses[0].house_no %>,<br>
            <%=user.addresses[0].village %>,
@@ -58,33 +181,30 @@
            <%=user.addresses[0].city %>,
            <%=user.addresses[0].state %>,<br>
            <%=user.addresses[0].pincode %>,
-
-
-
-
-
-
           </p>
-          <a href="/addresses" class="text-decoration-none float-end ">view all addresses</a>
+          <a href="/addresses" class="text-decoration-none float-end ">view all addresses</a> -->
           <!-- Address(,ahoePrimary address,link->  view all addres) -->
 
-        </div>
+        <!--  </div>
 
         <div class="pswd border shadow rounded m-3 p-3 bg-white">
           <div class="d-flex flex-column">
             <h4>Edit Password</h4>
-            <form  id="changePasswodForm" class="d-flex flex-column">
+            <form class="d-flex flex-column" id="oldPassForm">
             <input type="password" name="current_password" placeholder="current password" class="p-2 m-2" onkeyup="checkPswd('<%= user._id %>')" id="current_password">
             <span id="message" class=" text-center" > </span>
+            </form>
+            <form class="d-flexflex-column" id="newPassForm">
             <input type="password" name="new_passwordrd1" placeholder="Type new password" class="p-2 m-2" id="new_passwordrd1" onkeyup="isSame()">
             <input type="password" name="new_passwordrd2" placeholder="Re-type  password" class="p-2 m-2" id="new_passwordrd2" onkeyup="isSame()">
             <span id="confirmPasswordErrorMessage"></span>
+          
            <button type="button" class="btn btn-dark"  id="submitButton" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
             Save
-            </button>
-
+            </button> -->
+            
             <!-- modal -->
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <!--   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -104,12 +224,13 @@
             </div>
           </form>
           </div>
-          <!-- password change(otp,resend otp,password validation) -->
         </div>
       </div>
-      <div class="col-md-3 col-4 mt-3"></div>
+      <div class="col-md-3 col-4 mt-3"></div> -->
 
     </div>
+
+
 
 
     <!-- Back to Top -->
@@ -120,6 +241,7 @@
     function isSame(params) {
       var new_passwordrd1 = $("#new_passwordrd1").val()
   var new_passwordrd2 = $("#new_passwordrd2").val()
+
   
   if( new_passwordrd1 != new_passwordrd2){
     $('#confirmPasswordErrorMessage').text('Passwords not matching')
@@ -129,13 +251,9 @@
     $('#confirmPasswordErrorMessage').text('Check your mail for a 4 digit code')
     $("#confirmPasswordErrorMessage").css("color","green") 
   }
-
-
-
     }
 function checkPswd(uID) {
   var current_password = $("#current_password").val()
-let x= $("#changePasswodForm").serialize();
   $.ajax({
     url:'/loginSecurity',
     method:'post',
