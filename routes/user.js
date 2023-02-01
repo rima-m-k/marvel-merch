@@ -9,7 +9,7 @@ router.route('/verifyotp').post(userController.postverifyotp);
 router.route('/login').get(userController.login).post(userController.postlogin);
 router.route('/forgotpassword').get(userController.forgotpassword).post(userController.postforgotpassword);
 router.route('/getemailforforgotpassword').post(userController.getemail);
-router.route('/changepassword').post(userController.postchangepassword);
+router.route('/changepassword').get(userController.changepassword).post(userController.postchangepassword);
 router.route('/productdisplay/:_id').get(userController.productdisplay);
 router.route('/showitems/:_id').get(userController.showitems);
 router.route('/cart').get(isLoggedIn,userController.showcart);
