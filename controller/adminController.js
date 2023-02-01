@@ -4,9 +4,10 @@ const Category = require("../model/categoryschema");
 const Coupon = require("../model/couponschema");
 const Order = require("../model/orderschema");
 const Banner = require("../model/bannerschema");
+const Admin = require("../model/adminschema");
 
+const bcryptjs = require("bcryptjs");
 const mongoose = require("mongoose");
-const Swal = require("sweetalert2");
 const moment = require('moment')
 const sharp = require("sharp");
 const dotenv = require("dotenv");
@@ -20,30 +21,30 @@ function adminLogin(req, res) {
   }
 }
 
-function postAdminLogin(req, res) {
+async function postAdminLogin(req, res) {
   try {
-    const admin = {
-      email: "admin@gmail.com",
-      password: "123",
-    };
-    if (req.body.email === admin.email && req.body.password == admin.password) {
+    
+    let admin = await Admin.findOne();
+    
+    let pswd = await bcryptjs.compare(req.body.password,admin.password)
+    if (req.body.email === admin.email && pswd===true ) { 
       req.session.adminsession = admin.email;
       return res.redirect("admin/dashboard");
     } else {
       return res.render("admin/login", { errorr: "Invalid Login Details" });
     }
   } catch (error) {
+    console.log(error)
     return res.redirect("/admin/errorPage");
   }
 }
 
 async function dashboard(req, res) {
   try {
-
-    let customers = await User.find().countDocuments() 
-    let products = await Product.find().countDocuments()
-    let orders = await Order.find().countDocuments()
-    let orderSum = await Order.aggregate([{$group: {_id:null, sum:{$sum:"$paidAmount"}}}])
+    let customers = await User.find().countDocuments();
+    let products = await Product.find({isDeleted:false}).countDocuments();
+    let orders = await Order.find().countDocuments();
+    let orderSum = await Order.aggregate([{$group: {_id:null, sum:{$sum:"$paidAmount"}}}]);
 
     let data={
       customers:customers,
@@ -60,15 +61,12 @@ async function dashboard(req, res) {
 
 async function graph(req,res){
   try{
-console.log("1");
-
     let currentYear = new Date();
     currentYear = currentYear.getFullYear();
     const orderData = await Order.aggregate([  
       {
         $project: {
           _id: 0,
-          // totalProducts: "$totalQty",
           billAmount: "$paidAmount",
           month: {
             $month: "$orderDate",
@@ -81,7 +79,6 @@ console.log("1");
       {
         $group: {
           _id: { month: "$month", year: "$year" },
-          // totalProducts: { $sum: "$totalProducts" },
           totalOrders: { $sum: 1 },
           revenue: {
             $sum: "$billAmount",
@@ -112,10 +109,10 @@ res.json({orderData,orders})
 
   }
 }
-
+ 
 async function products(req, res) {
   try {
-    const products = await Product.find().populate("product_category");
+    const products = await Product.find().populate("product_category"); 
     return res.render("admin/products", { products }); 
   } catch (error) {
     console.log(error);

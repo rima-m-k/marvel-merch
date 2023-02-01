@@ -3,6 +3,8 @@
   position: sticky;
   top: 0;
 }
+
+
 .headingforcatg{
   background-color: rgb(251, 251, 251);
   height: 10vh;
@@ -17,8 +19,6 @@ margin-top: 10px;
 }
 
 .navbar-with-bs {
-  height: 10vh;
-
   background-color: #000000;
 }
 
@@ -357,10 +357,10 @@ select {
   width: -webkit-fill-available;
 }
 
-.otpPage {
+/* .otpPage {
   margin-top: 5rem;
 
-}
+} */
 
 .welcome {
   margin-left: 2rem;

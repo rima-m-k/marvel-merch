@@ -192,7 +192,7 @@ async function forgotpassword(req, res) {
     activeSession=1;
      showName = await User.find({_id:req.session.usersession},{firstname:1});
     }
-    return res.render("user/forgotpassword",{email:null,activeSession,showName});
+    return res.render("user/forgotpassword",{activeSession,showName});
   } catch (error) {
     return res.redirect("/errorPage");
   }
@@ -200,18 +200,14 @@ async function forgotpassword(req, res) {
 
 async function getemail(req, res) {
   try {
-    let activeSession =0;
-    let showName = null;
-    if(req.session.usersession){
-    activeSession=1;
-     showName = await User.find({_id:req.session.usersession},{firstname:1});
-    }
     let UserForFP = User.findOne({ email: req.body.emailForForgotPassword });
     req.session.UserForFP = UserForFP
      let email=UserForFP.email
      
-    const otpForForgotPassword = `${Math.floor(1000 + Math.random() * 9000)}`;
-    req.session.otpForForgotPassword = otpForForgotPassword
+      const otpForForgotPassword = `${Math.floor(1000 + Math.random() * 9000)}`;
+      
+      req.session.otpForForgotPassword =otpForForgotPassword
+      console.log(req.session.otpForForgotPassword);
     var transporter = nodemailer.createTransport({
       service: " gmail",
       auth: {
@@ -219,7 +215,6 @@ async function getemail(req, res) {
         pass: "yzdjivmydvsuvgbd", 
       },
     });
-    console.log(req.body.emailForForgotPassword);
     var mailOptions = {
       from: "marvelmerch806@gmail.com",
       to: req.body.emailForForgotPassword,
@@ -232,7 +227,7 @@ async function getemail(req, res) {
       } else {
         console.log("Email sent" + info.response);
         console.log(otpForForgotPassword);
-        return res.render("user/forgotpassword",{email,activeSession,showName});
+        res.json({success:true,email:email})
       }
     });
   } catch (error) {
@@ -242,17 +237,17 @@ async function getemail(req, res) {
 
 async function postforgotpassword(req, res) {
   try {
-    let activeSession =0;
-    let showName = null;
-    if(req.session.usersession){
-    activeSession=1;
-     showName = await User.find({_id:req.session.usersession},{firstname:1});
-    }
-    otpForForgotPassword = req.session.otpForForgotPassword
+    
+    let otpForForgotPassword = await req.session.otpForForgotPassword;
+    console.log("req.session.otpForForgotPassword    "+req.session.otpForForgotPassword);
+    console.log("otpForForgotPassword    "+otpForForgotPassword);
     if (otpForForgotPassword === req.body.FPOtp) {
-      return res.render("user/changepassword",{activeSession,showName});
+      req.session.otpForForgotPassword = null
+      res.json({success:true})
+
     } else {
-      res.render("user/forgotpassword", { message: "invalid OTP",activeSession ,showName});
+      res.json({success:false,message: "invalid OTP"})
+
     }
   } catch (error) {
     return res.redirect("/errorPage");

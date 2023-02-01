@@ -6597,9 +6597,9 @@ a.close.disabled {
   align-items: flex-end !important;
 }
 
-.align-items-center {
+/* .align-items-center {
   align-items: center !important;
-}
+} */
 
 .align-items-baseline {
   align-items: baseline !important;
@@ -6645,9 +6645,9 @@ a.close.disabled {
   align-self: flex-end !important;
 }
 
-.align-self-center {
+/* .align-self-center {
   align-self: center !important;
-}
+} */
 
 .align-self-baseline {
   align-self: baseline !important;

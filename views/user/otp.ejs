@@ -1,49 +1,28 @@
 <%- include('../layouts/userheader.ejs'); -%>
-<div class="container otpPage" id="top">
-   
-    <div class="row">
-      <div class="col">
+<body class="my-auto bg-light">
+<div class="container mx-auto my-auto" id="top" style="height: 100vh;">
+  
+    <div class="row align-items-center mt-5 pt-5" >
      
-      </div>
-      <div class="col-5">
-        <form method="post" action="/verifyotp">
-       <input type="text" name="otp_code" id="otp_code" class=" mt-4" placeholder="Enter otp here">
-       <button type="submit" class="btn btn-dark mt-4">Verify otp</button>
-       <p class="text-danger fw-bold mx-auto"><%=locals.message %></p>
-    </form>
+      <div class="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-6 mx-auto mt-5 pt-5 align-self-center bg-white  border rounded" >
+<h3 class="py-2 mb-3">VERIFY OTP</h3>
+        <form method="post"  action="/verifyotp">
+        <div class="d-flex flex-column  mb-3  align-items-center justify-content-center">
 
+       <input type="text" name="otp_code" id="otp_code" class="form-control  p-2" placeholder="Enter otp here" >
+       <p class="text-danger fw-bold mx-auto"><%=locals.message %></p>
+       <button type="submit" class="btn btn-dark mt-4">Verify otp</button>
+       </div>
+    </form>
    
       </div>
-      <div class="col">
-        
-      </div>
+     
     </div>
   </div>
-
-
-<!-- ----------------------------------------------- -->
-<br /><br /><br /><br />
-<section>
-
-  <div class="container mt-5">
-    <div class="user signinBx">
-      <div class="formBx">
-        <div class="container1">
-        <form method="post" action="/verifyotp">
-          <h2>OTP Verification</h2>
-          <input type="text" name="otp_code" id="otp_code" class=" mt-4" placeholder="Enter otp here">
-          <br />
-          <button type="submit" class="btn btn-dark mt-4">Verify otp</button>
-
-          
-        </form>
-      </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- Back to Top -->
 <a href="#top" class="btn back-to-top"><i class="fa fa-angle-double-up"></i></a>
+</body>
+
 
 <%- include('../layouts/userfooter.ejs'); -%>
