@@ -6568,7 +6568,7 @@ a.close.disabled {
 .flex-shrink-1 {
   flex-shrink: 1 !important;
 }
-
+/* 
 .justify-content-start {
   justify-content: flex-start !important;
 }
@@ -6596,11 +6596,11 @@ a.close.disabled {
 .align-items-end {
   align-items: flex-end !important;
 }
-
+ */
 /* .align-items-center {
   align-items: center !important;
 } */
-
+/* 
 .align-items-baseline {
   align-items: baseline !important;
 }
@@ -6644,7 +6644,7 @@ a.close.disabled {
 .align-self-end {
   align-self: flex-end !important;
 }
-
+ */
 /* .align-self-center {
   align-self: center !important;
 } */

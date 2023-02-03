@@ -34,7 +34,7 @@ router.route('/addtoWishlist/:_id').get(isLoggedIn,userController.addtoWishlist)
 router.route('/showWishlist').get(isLoggedIn,userController.showWishlist);
 router.route('/remove-wishlist-item').post(isLoggedIn,userController.removeFromWishlist);
 router.route('/move-to-cart').post(isLoggedIn,userController.moveToCart);
-router.route('/loginSecurity').get(isLoggedIn,userController.loginSecurity).post(isLoggedIn,userController.postLoginSecurity);
+router.route('/loginSecurity').get(isLoggedIn,userController.loginSecurity).post(isLoggedIn,userController.postLoginSecurity).patch(isLoggedIn,userController.patchLoginSecurity);
 
 router.route('/errorPage').get(userController.errorPage);
 router.route('/logout').get(isLoggedIn,userController.logout);

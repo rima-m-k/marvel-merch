@@ -1,244 +1,157 @@
 <%- include('../layouts/userheader.ejs'); -%>
-  <div class="container-fluid  mx-auto mt-5 bg-light">
 
     <p class="text-danger fw-bold mx-auto " id="top">
-      <%=locals.errorr %>
     </p>
     <br>
     <br>
     <br>
     <br>
-   <div class="row d-flex flex-column align-items-center">
-      <div class="col-md-6 col-6 mt-3 justify-content-center align-items-center">
-        <div class="border shadow rounded m-3 p-3 bg-white">
-<form class=" mx-auto justify-content-center d-flex" id="profileForm">
-<div class="justify-content-center">
-  <h2 class="float-left">Profile</h2><br><br>
+    
+  <div class="container mx-auto mt-5 bg-light">
+  <div class="row">
+    <div class="col-xl-4">
+        <!-- Profile picture card-->
+        <div class="card mb-4 mb-xl-0">
+            <div class="card-header">Profile Picture</div>
+            <div class="card-body text-center">
+                <!-- Profile picture image-->
+                <img class="img-account-profile rounded-circle mb-2" src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+                <!-- Profile picture help block-->
+                <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                <!-- Profile picture upload button-->
+                <button class="btn btn-primary" type="button">Upload new image</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-8">
+        <!-- Account details card-->
+        <div class="card mb-4">
+            <div class="card-header">Account Details</div>
+            <div class="card-body">
+                <form id="AccountDetailsForm">
+                    <!-- Form Row-->
+                    <div class="row gx-3 mb-3">
+                        <!-- Form Group (first name)-->
+                        <div class="col-md-6">
+                            <label class="small mb-1" for="inputFirstName">First name</label>
+                            <input class="form-control" name="firstname" id="firstname" type="text"  value="<%= user.firstname %>">
+                        </div>
+                        <!-- Form Group (last name)-->
+                        <div class="col-md-6">
+                            <label class="small mb-1" for="inputLastName">Last name</label>
+                            <input class="form-control" id="lastname" name="lastname"  type="text" placeholder="Enter your last name" value="<%= user.lastname%>">
+                        </div>
+                    </div>
+                   
+                    <!-- Form Row-->
+                    <div class="row gx-3 mb-3">
+                        <!-- Form Group (phone number)-->
+                        <div class="col-md-6">
+                            <label class="small mb-1" for="inputPhone">Phone number</label>
+                            <input class="form-control" id="phone" name="phone"  type="tel"  value="<%= user.phone %>">
+                        </div>
+                       
+                    </div>
+                    <!-- Save changes button-->
+                    <button class="btn btn-primary" type="submit" onclick="profileUpdate()">Save changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+      function profileUpdate() {
+        $("#AccountDetailsForm").submit((e) => {
+          e.preventDefault();
+          var firstname= $("#firstname").val()
+           var lastname= $("#lastname").val()
+         var phone = $("#phone").val()
+
+          $.ajax({
+        url:'/loginSecurity',
+        method:'post',
+        data:{
+          firstname: firstname,
+          lastname:lastname,
+          phone:phone
+        },
+        success:(res)=>{
+          console.log(res)
+          if(res.success ==1){
+          Swal.fire({
+            toast:true,
+        position: 'top',
+        icon: 'success',
+        title: 'Saved Changes',
+        showConfirmButton: false,
+        timer: 1500
+      })
+          $('#firstname').val(res.user.firstname);
+          $('#lastname').val(res.user.lastname);
+          $('#phone').val(res.user.phone);
+      
+          }
+        }
+      })
+      })
+      }
+      </script>
   
-  First name 
-  <input type="text" value="<%= user.firstname %>" class="p-2 m-2" name="firstname" id="firstname"><br>
-
-  Last name
-  <input type="text" value="<%= user.lastname %> " class="p-2 m-2" name="lastname" id="lastname"><br>
-
-  phone
-  <input type="text" value="<%= user.phone %>" class="p-2 m-2" name="phone" id="phone"><br>
-  <input type="text" value="<%= user._id %>" name="UID" hidden>
-  <button type="submit" class="btn btn-secondary my-3" onclick="profileUpdate()">Update</button><br>
-
+    <div class="col-md-6 col-6 mt-3  align-items-center float-end" >
+      <!-- <div class="border shadow rounded m-3 p-3 bg-white"> -->
+<div class="card mb-4">
+<div class="card-header">Address</div >
+<div class="card-body">
+<b><%=user.addresses[0].address_name %></b>  ,<br>
+  <%=user.addresses[0].house_no %>,<br>
+  <%=user.addresses[0].village %>,
+  <%=user.addresses[0].country %>,<br>
+  <%=user.addresses[0].city %>,
+  <%=user.addresses[0].state %>,<br>
+  Pin:<%=user.addresses[0].pincode %>,
+  <a href="/addresses" class="text-decoration-none float-end ">view all addresses</a>
+</div>
 </div>
 
-</form>
+ </div> 
+
+ <div class="col-md-6 col-6 mt-3  align-items-center float-end" >
+  <!-- <div class="border shadow rounded m-3 p-3 bg-white"> -->
+<div class="card mb-4">
+<div class="card-header">Change Password</div >
+<div class="card-body">
+
+  <form id="CheckPasswordForm">
+    <label class="small mb-1" for="current_password">Current Password</label>
+    <input type="password" name="current_password"  placeholder="" class="form-control p-2 m-2" onkeyup="checkPswd('<%= user._id %>')" id="current_password"><br>
+    <span id="message" class=" text-center" > </span>
+  </form>
+  <form id="ChangePasswordForm" >
+    <label class="small mb-1" for="new_passwordrd1">New Password</label>
+    <input type="password" name="new_passwordrd1" placeholder="" class="form-control p-2 m-2" id="new_passwordrd1" onkeyup="isSame()" ><br>
+  
+    <label class="small mb-1" for="new_passwordrd2">Re Type New Password</label>
+    <input type="password" name="new_passwordrd2" placeholder="" class="form-control p-2 m-2" id="new_passwordrd2" onkeyup="isSame()" ><br>
+    <span id="confirmPasswordErrorMessage"></span>
+    <button type="submit" class="btn btn-primary">Change Password</button>
+  
+  </form>
+</div>
 </div>
 
-      </div>
-<script>
-function profileUpdate() {
-  $("#profileForm").submit((e) => {
-    e.preventDefault();
-    var data = $("#profileForm").serialize();
-    $.ajax({
-  url:'/loginSecurity',
-  method:'post',
-  data:{
-    formData: $("#profileForm").serialize();,
-  },
-  success:(res)=>{
-    console.log(res)
-    if(res.success ==1){
-    alert("profile updated successfully");
-    $('#firstname').val(res.user.firstname);
-    $('#lastname').val(res.user.lastname);
-    $('#phone').val(res.user.phone);
-
-    }
-  }
-})
-})
-
-
-
-}
-</script>
-
-
-      <div class="col-md-6 col-6 mt-3 justify-content-center align-items-center">
-        <div class="border shadow rounded m-3 p-3 bg-white">
-<form class=" mx-auto justify-content-center d-flex">
-<div class="justify-content-center">
-  <h2>Address</h2>
-  <p>
-  <b><%=user.addresses[0].address_name %></b>  ,<br>
-    <%=user.addresses[0].house_no %>,<br>
-    <%=user.addresses[0].village %>,
-    <%=user.addresses[0].country %>,<br>
-    <%=user.addresses[0].city %>,
-    <%=user.addresses[0].state %>,<br>
-    Pin:<%=user.addresses[0].pincode %>,
-   </p>
-   <a href="/addresses" class="text-decoration-none float-end ">view all addresses</a>
-</div>
-
-</form>
-</div>
-
-      </div>
-
-      <div class="col-md-6 col-6 mt-3 justify-content-center align-items-center">
-        <div class="border shadow rounded m-3 p-3 bg-white">
-<div class="justify-content-center">
-  <h2>Security</h2>
-  <form>
-  email 
-  <input type="text" value="<%= user.email %>" class="p-2 m-2" >
-  <button type="button" class="btn btn-dark"  id="submitButton" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-    Change email
-    </button> <br>
-    <!-- modal -->
-  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Enter Password</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <input type="text" name="Otp">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" >Submit</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</form>
-
-<form>
-  Current Password
-  <input type="password" name="current_password" placeholder="current password" class="p-2 m-2" onkeyup="checkPswd('<%= user._id %>')" id="current_password"><br>
-  <span id="message" class=" text-center" > </span>
-
-  New Password
-  <input type="password" name="new_passwordrd1" placeholder="Type new password" class="p-2 m-2" id="new_passwordrd1" onkeyup="isSame()" ><br>
-
-  Re-type New Password
-  <input type="password" name="new_passwordrd2" placeholder="Re-type  password" class="p-2 m-2" id="new_passwordrd2" onkeyup="isSame()" ><br>
-  <span id="confirmPasswordErrorMessage"></span>
-  <button type="submit" class="btn btn-secondary">Change Password</button>
-
-</form>
-</div>
-
-</div>
-
-      </div>
-      </div>
-      <!--  <div class="col-md-3 col-4 mt-3">
-
-        <div class="profile d-flex flex-row border shadow rounded m-3 p-3 bg-white">
-          <div class="l p-4">
-            <img src="#" style="max-width: 100px; max-height :100px;">
-            <input type="button" name="profilePic">
-          </div>
-          <div class="r p-4">
-            <div class="userName">
-              <h5>
-                <%= user.firstname %>
-                  <%= user.lastname %>
-              </h5>
-              <a href="#" class="text-decoration-none float-end">change name</a>
-            </div>
-            <div class="phone">
-              Phone: <h5>
-                <%= user.phone %>
-              </h5>
-              <a href="#" class="text-decoration-none float-end">change phone</a>
-            </div>
-          </div> -->
-          <!-- profile(first name,lastname,profile photo) -->
-       <!-- </div>
-
-        <div class="email border  shadow rounded m-3 p-3 bg-white">
-          <h4>Email address</h4>
-          <%= user.email %><br>
-            <a href="#" class="text-decoration-none float-end">change email</a>-->
-
-            <!-- Email address (validation,otp) -->
-        <!-- </div>
-
-      </div>
-      <div class="col-md-4 col-4 mt-3">
-        <div class="address d-flex flex-column border shadow rounded m-3 p-3 bg-white">
-
-          <h4>Addresses</h4>-->
-          <!-- <span class="badge bg-secondary " style="max-width: fit-content; max-height: fit-content;">Default</span> -->
-        <!--   <p>
-           <%=user.addresses[0].address_name %>,
-           <%=user.addresses[0].house_no %>,<br>
-           <%=user.addresses[0].village %>,
-           <%=user.addresses[0].country %>,<br>
-           <%=user.addresses[0].city %>,
-           <%=user.addresses[0].state %>,<br>
-           <%=user.addresses[0].pincode %>,
-          </p>
-          <a href="/addresses" class="text-decoration-none float-end ">view all addresses</a> -->
-          <!-- Address(,ahoePrimary address,link->  view all addres) -->
-
-        <!--  </div>
-
-        <div class="pswd border shadow rounded m-3 p-3 bg-white">
-          <div class="d-flex flex-column">
-            <h4>Edit Password</h4>
-            <form class="d-flex flex-column" id="oldPassForm">
-            <input type="password" name="current_password" placeholder="current password" class="p-2 m-2" onkeyup="checkPswd('<%= user._id %>')" id="current_password">
-            <span id="message" class=" text-center" > </span>
-            </form>
-            <form class="d-flexflex-column" id="newPassForm">
-            <input type="password" name="new_passwordrd1" placeholder="Type new password" class="p-2 m-2" id="new_passwordrd1" onkeyup="isSame()">
-            <input type="password" name="new_passwordrd2" placeholder="Re-type  password" class="p-2 m-2" id="new_passwordrd2" onkeyup="isSame()">
-            <span id="confirmPasswordErrorMessage"></span>
-          
-           <button type="button" class="btn btn-dark"  id="submitButton" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            Save
-            </button> -->
-            
-            <!-- modal -->
-          <!--   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Enter OTP</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <input type="text" name="Otp">
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Submit</button>
-                    <button type="button" class="btn btn-primary">Resend OTP</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 col-4 mt-3"></div> -->
+</div> 
 
     </div>
 
-
-
+</div>
 
     <!-- Back to Top -->
     <a href="#top" class="btn back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
-  </div>
+<!--  -->
+  <%- include('../layouts/userfooter.ejs'); -%>
+<!-- 
   <script>
-    function isSame(params) {
+    function isSame() {
       var new_passwordrd1 = $("#new_passwordrd1").val()
   var new_passwordrd2 = $("#new_passwordrd2").val()
 
@@ -256,7 +169,7 @@ function checkPswd(uID) {
   var current_password = $("#current_password").val()
   $.ajax({
     url:'/loginSecurity',
-    method:'post',
+    method:'patch',
     data: current_password,
     success:(res)=>{
       if(res.data =="match"){
@@ -273,4 +186,66 @@ function checkPswd(uID) {
 }
 
   </script>
-  <%- include('../layouts/userfooter.ejs'); -%>
+ 
+     -->
+
+  <style>body{margin-top:20px;
+    background-color:#f2f6fc;
+    color:#69707a;
+    }
+    .img-account-profile {
+        height: 10rem;
+    }
+    .rounded-circle {
+        border-radius: 50% !important;
+    }
+    .card {
+        box-shadow: 0 0.15rem 1.75rem 0 rgb(33 40 50 / 15%);
+    }
+    .card .card-header {
+        font-weight: 500;
+    }
+    .card-header:first-child {
+        border-radius: 0.35rem 0.35rem 0 0;
+    }
+    .card-header {
+        padding: 1rem 1.35rem;
+        margin-bottom: 0;
+        background-color: rgba(33, 40, 50, 0.03);
+        border-bottom: 1px solid rgba(33, 40, 50, 0.125);
+    }
+    .form-control, .dataTable-input {
+        display: block;
+        width: 100%;
+        padding: 0.875rem 1.125rem;
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1;
+        color: #69707a;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #c5ccd6;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: 0.35rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    
+    .nav-borders .nav-link.active {
+        color: #0061f2;
+        border-bottom-color: #0061f2;
+    }
+    .nav-borders .nav-link {
+        color: #69707a;
+        border-bottom-width: 0.125rem;
+        border-bottom-style: solid;
+        border-bottom-color: transparent;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }</style>
+

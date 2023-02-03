@@ -1,6 +1,5 @@
 const bcryptjs = require("bcryptjs");
 const nodemailer = require("nodemailer");
-const Swal = require("sweetalert2");
 const moment = require("moment");
 const paypal = require("paypal-rest-sdk");
 
@@ -190,7 +189,7 @@ async function login(req, res) {
 
 async function postlogin(req, res) {
   try {
-    let activeSession = 0;
+    let activeSession = 0; 
     let showName = null;
     if (req.session.usersession) {
       activeSession = 1;
@@ -370,7 +369,7 @@ async function productdisplay(req, res) {
     }
     let flag;
     productdetails = await Product.findById(req.params._id);
-    if (req.session.usersesion) {
+    if (req.session.usersession) {
       flag = true;
     } else {
       flag = false;
@@ -1420,7 +1419,7 @@ async function removeFromWishlist(req, res) {
 async function moveToCart(req, res) {
   try {
     const cartItems = await Cart.findOne({
-      userid: mongoose.Types.ObjectId(req.session.usersesion),
+      userid: mongoose.Types.ObjectId(req.session.usersession),
     });
     let productExists = cartItems.product.findIndex(
       (prod) => prod.productid == productID
@@ -1516,22 +1515,22 @@ async function loginSecurity(req, res) {
 
 async function postLoginSecurity(req, res) {
   try {
-    console.log(req.body);
-
-    let formData = req.body.formData;
-    let x = await User.updateOne(
-      { _id: formData.UID },
+   
+    console.log(req.body); 
+    let x = await User.updateOne( 
+      { _id: req.session.usersession },
       {
         $set: {
-          firstname: formData.firstname,
-          lastname: formData.lastname,
-          phone: formData.phone,
+          firstname: req.body.firstname,
+          lastname: req.body.lastname,
+          phone: req.body.phone,
         },
       }
     );
     console.log(x);
-    userDetails = await User.findById({ _id: formData.UID });
-    console.log(userDetails);
+
+    userDetails = await User.findOne({ _id: req.session.usersession });
+    // console.log(userDetails);
     res.json({
       success: 1,
       user: {
@@ -1541,20 +1540,28 @@ async function postLoginSecurity(req, res) {
       },
     });
 
-    //     currentUser = await User.findById(req.body.userId);
-    //     const comparepassword = await bcryptjs.compare(
-    //       req.body.current_password,
-    //       currentUser.password
-    //     );
-    //     console.log(comparepassword);
-    // if(comparepassword){
-    // res.json({data:"match"})
-    // }else{
-    //   res.json({data:"notmatch"})
-    // }
-    // let enteredOTP = req.body.form_data.Otp
+    
   } catch (error) {
     return res.redirect("/errorPage");
+  }
+}
+
+async function patchLoginSecurity(req,res){
+  try{
+    currentUser = await User.findOne({ _id: req.session.usersession });
+        const comparepassword = await bcryptjs.compare(
+          req.body.current_password,
+          currentUser.password
+        );
+        console.log(comparepassword);
+    if(comparepassword){
+    res.json({data:"match"})
+    }else{
+      res.json({data:"notmatch"})
+    }
+  }catch(error){
+    return res.redirect("/errorPage");
+
   }
 }
 async function shop(req, res) {
@@ -1703,6 +1710,7 @@ module.exports = {
   removeFromWishlist,
   loginSecurity,
   postLoginSecurity,
+  patchLoginSecurity,
   moveToCart,
   search,
   sort,

@@ -280,7 +280,13 @@ function placeorder() {
       data: $("#checkoutForm").serialize(),
       success: (response) => {
         if(response.data == 1){
-        alert("ordere Placed Successfully");
+        Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: 'ordere Placed Successfully',
+  showConfirmButton: false,
+  timer: 1500
+})
         location.replace ="/orderSuccess";
         }else{
           location.href = (response.data)
@@ -289,7 +295,13 @@ function placeorder() {
       },
     });
       }else{
-        alert("Please add complete addess details or select from available addresses ");
+        Swal.fire({
+  position: 'top-end',
+  icon: 'warning',
+  title: 'Please add complete addess details or select from available addresses',
+  showConfirmButton: false,
+  timer: 1500
+})
       }
   
   });
