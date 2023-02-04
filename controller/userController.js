@@ -28,7 +28,7 @@ async function landingPage(req, res) {
     if (req.session.usersession) {
       activeSession = 1;
       showName = await User.find(
-        { _id: req.session.usersession },
+        { _id: req.session.usersession }, 
         { firstname: 1 }
       );
     }
