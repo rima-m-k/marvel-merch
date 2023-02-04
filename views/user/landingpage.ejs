@@ -66,7 +66,7 @@
 
 
 <!-- Just arrivedProducts Start -->
-<div class="container-fluid pt-5 ">
+<div class="container-fluid pt-5 	d-none d-lg-block d-xl-none">
   <img src="images/shieldwall.png" style="width: 150px; height: 150px;">
   <div class="text-center mb-4">
     <h2 class="section-title px-5 "><span class="px-2">Just Arrived</span></h2>
@@ -74,7 +74,7 @@
   </div>
   <div class="row px-xl-5 pb-3">
   <% products.forEach(function(product){ %>
-    <div class="col-lg-3 col-md-6 col-sm-4 col-4 pb-1">
+    <div class="col-lg-3 col-md-6 col-sm-6 col-6 pb-1">
       <a href="/productdisplay/<%= product._id%>" class="btn btn-sm text-dark p-0">
       <div class="card product-item border-1 border-Jet mb-4 " >
         <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
@@ -135,73 +135,5 @@
 <a href="#top" class="btn back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
 <br>
-<nav class="navbar navbar-expand-lg  navbar-with-bs ">
-  <div  class="logo m-0 display-5 d-block d-lg-none">
-        <a href="/" class="navbar-brand">
-        <img src="images/logo.jpg" alt="MarvelMerch" width="150" height="30" />
-      </a>
-    </div>
-  <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-      <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-    <ul class="navbar-nav float-start">
-      <% if (activeSession===0) { %>
-        <li class="nav-item">
-          <a class="nav-link link-light" href="/login"> Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link link-light" href="/signup"> Signup</a>
-        </li>
-        <% } %>
-      </ul>
-      
-        <div class="navbar-nav logo justify-content-center d-none d-lg-block">
-          <a href="/" class="navbar-brand">
-            <img src="images/logo.jpg" alt="MarvelMerch" width="150" height="30" />
-          </a>
-        </div>
-
-      <div class="navbar-nav  py-0">
-        <ul class="nav  ">
-          <li class="nav-item d-inline d-inline">
-            <a class="nav-link active" aria-current="page" href="/shop">
-              <img src="images/search_icon.png" id="search_icon" />
-            </a>
-          </li>
-          <li class="nav-item d-inline">
-            <a class="nav-link" href="/cart">
-              <img src="images/cart_icon.png" id="cart_icon" />
-
-            </a>
-          </li>
-          <li class="nav-item d-inline">
-            <a class="nav-link" href="/showWishlist">
-              <img src="images/wishlist_icon.png" id="wishlist_icon" />
-            </a>
-          </li>
-          <li class="nav-item d-inline">
-            <% if (activeSession===0) { %>
-              <a class="nav-link" href="/profile">
-              <img src="images/profile_icon.png" id="profile_icon" />
-            <% }else {  %>
-              <div class="dropdown">
-                <button class="btn rounded bg-transparent text-white border dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                  <%= showName[0].firstname %>
-                </button>
-                <ul class="dropdown-menu bg-light" aria-labelledby="dropdownMenuButton1">
-                  <li><a class="dropdown-item text-dark" href="/loginSecurity">Profile</a></li>
-                  <li><a class="dropdown-item text-dark" href="/viewOrders">Orders</a></li>
-                  <li><a class="dropdown-item text-dark" href="/logout">Logout</a></li>
-                </ul>
-              </div>
-              <% } %>
-            </a> 
-          </li>
-        </ul>
-     
-      </div>
-  </div>
-</nav>
 
 <%- include('../layouts/userfooter.ejs'); -%>

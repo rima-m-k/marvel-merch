@@ -32,7 +32,9 @@
             <img src="/images/processed_images/<%= product.images[3] %>" class="image-in-product-table mb-1">
           </td>
           <td><%= product.product_title %></td>
-          <td><%= product.product_description %></td>
+          <td><span class="d-inline-block text-truncate" style="max-width: 150px;">
+            <%= product.product_description %>
+          </span></td>
           <td><%= product.product_category.categoryname %></td>
           <td><%= product.price %></td>
           <td><%= product.stock %></td>

@@ -18,19 +18,21 @@
                     <div >
                     Change Order Status To:
                     <% if(orders.orderStatus=="Placed"){ %>
-                    <button class="btn btn-secondary" style="max-width: fit-content;">Shipped</button>
+                    <button class="btn btn-secondary" style="max-width: fit-content;" onclick="changeOrderSts('Shipped')">Shipped</button>
                     <% } else if(orders.orderStatus=="Shipped") { %>
-                    <button class="btn btn-secondary" style="max-width: fit-content;">Out For Delivery</button>
+                    <button class="btn btn-secondary" style="max-width: fit-content;" onclick="changeOrderSts('Out For Delivery')">Out For Delivery</button>
                     <% } else if(orders.orderStatus=="Out For Delivery") { %>
-                    <button class="btn btn-secondary" style="max-width: fit-content;">Delivered</button>
+                    <button class="btn btn-secondary" style="max-width: fit-content;" onclick="changeOrderSts('Delivered')">Delivered</button>
                     <% } else{} %>
                 </div>
                     </div>
                 </div>
+                
                 <div class="container shadow  p-4 bg-light"  id="printableArea">
                     <div class="row d-flex flex-column justify-content-center align-items-center py-5">
                         <div class="col-12 d-flex justify-content-between">
                             <p class="px-5"><b>Order Id</b> : <%= orders._id %></p>
+                            <input type="text" value="<%= orders._id %>" hidden id="ID" >
                             <p class="px-5"> <b>Order Status</b>       
                                 <% if(orders.orderStatus=="Shipped" || orders.orderStatus=="Out for delivery") { %>
                                 <span class="badge bg-primary">  <%= orders.orderStatus %></span>
@@ -69,8 +71,6 @@
                         </div>  
                         
                         </div>
-
-                        <% orders.orderedItems.forEach(function(product){ %>
                         <div class="col-12 px-5">
                             <table class="table table-secondary  px-5">
                                 <thead>
@@ -83,6 +83,8 @@
                                   </tr>
                                 </thead>
                                 <tbody>
+                        <% orders.orderedItems.forEach(function(product){ %>
+
                                   <tr>
                                     <th scope="row"><img src="/images/processed_images/<%= product.productid.images[0] %>" style="max-width: 90px;"></th>
                                     <td><%= product.productid.product_title %></td>
@@ -97,6 +99,7 @@
                                     </td>
                                   </tr>
                                   
+                        <%})%>
                                   
                                 </tbody>
                               </table>
@@ -109,7 +112,6 @@
                                 
                             </div>
                         </div>
-                        <%})%>
                         <!-- <hr class="bg-dark  text-center" style="width: 90%;"> -->
                        
 
@@ -143,4 +145,17 @@
     window.print();
     document.body.innerHTML = originalContent;
 }
+    function changeOrderSts(status) {
+        $.ajax({
+            url:'/admin/changeStatus',
+            method:'post',
+            data:{
+                status:status,
+                ID:$('#ID').val(),
+            },
+            success:(res) =>{
+                location.reload();
+            }
+        })
+    }
 </script>

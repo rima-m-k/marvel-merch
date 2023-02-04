@@ -512,6 +512,8 @@ async function postaddcoupon(req, res) {
         couponName: req.body.coupon_name,
         couponCode: req.body.couponCode,
         discount: req.body.discount,
+        minAmount:minAmount,
+        maxAmount:maxAmount,
         startingDate : req.body.startingDate,
         expiryDate : req.body.expiryDate,
         
@@ -634,6 +636,8 @@ return res.render("admin/orderDetails",{orders,moment})
     
   }
 }
+
+
 
 function logout(req, res) {
   try {

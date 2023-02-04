@@ -14,6 +14,14 @@ const couponschema= mongoose.Schema({
         type:Number,
         
     },
+    minAmount:{
+        type:Number,
+        
+    },
+    maxAmount:{
+        type:Number,
+        
+    },
     startingDate:{
         type:Date,
         

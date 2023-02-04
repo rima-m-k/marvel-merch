@@ -18,7 +18,7 @@
 
   </head>
   <body>
-   
+<!--    
     <nav class="navbar navbar-expand-lg fixed-top navbar-with-bs ">
       <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,7 +83,75 @@
         </div>
       </div>
     </nav>
+ -->
+ <nav class="navbar navbar-expand-lg  navbar-with-bs ">
+  <div  class="logo m-0 display-5 d-block d-lg-none">
+        <a href="/" class="navbar-brand">
+        <img src="images/logo.jpg" alt="MarvelMerch" width="150" height="30" />
+      </a>
+    </div>
+  <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+    <ul class="navbar-nav float-start" style="font-size: smaller">
+      <% if (activeSession===0) { %>
+        <li class="nav-item ml-2">
+          <a class="nav-link link-light" href="/login"> Login</a>
+        </li>
+        <li class="nav-item ml-2">
+          <a class="nav-link link-light" href="/signup"> Signup</a>
+        </li>
+        <% } %>
+      </ul>
+      
+        <div class="navbar-nav logo justify-content-center d-none d-lg-block">
+          <a href="/" class="navbar-brand">
+            <img src="images/logo.jpg" alt="MarvelMerch" width="150" height="30" />
+          </a>
+        </div>
 
+      <div class="navbar-nav  ">
+        <ul class="nav justify-content-end ">
+          <li class="nav-item d-inline d-inline mr-3">
+            <a class="nav-link active" aria-current="page" href="/shop">
+              <img src="images/search_icon.png" id="search_icon" />
+            </a>
+          </li>
+          <li class="nav-item d-inline mr-3">
+            <a class="nav-link" href="/cart">
+              <img src="images/cart_icon.png" id="cart_icon" />
+
+            </a>
+          </li>
+          <li class="nav-item d-inline mr-3">
+            <a class="nav-link" href="/showWishlist">
+              <img src="images/wishlist_icon.png" id="wishlist_icon" />
+            </a>
+          </li>
+          <li class="nav-item d-inline mr-3">
+            <% if (activeSession===0) { %>
+              <a class="nav-link" href="/profile">
+              <img src="images/profile_icon.png" id="profile_icon" />
+            <% }else {  %>
+              <div class="dropdown">
+                <button class="btn rounded bg-transparent text-white border dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                  <%= showName[0].firstname %>
+                </button>
+                <ul class="dropdown-menu bg-light" aria-labelledby="dropdownMenuButton1">
+                  <li><a class="dropdown-item text-dark" href="/loginSecurity">Profile</a></li>
+                  <li><a class="dropdown-item text-dark" href="/viewOrders">Orders</a></li>
+                  <li><a class="dropdown-item text-dark" href="/logout">Logout</a></li>
+                </ul>
+              </div>
+              <% } %>
+            </a> 
+          </li>
+        </ul>
+     
+      </div>
+  </div>
+</nav>
 
 
 
