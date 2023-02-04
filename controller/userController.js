@@ -374,6 +374,7 @@ async function productdisplay(req, res) {
     } else {
       flag = false;
     }
+    
     return res.render("user/product-details", {
       productdetails,
       flag,

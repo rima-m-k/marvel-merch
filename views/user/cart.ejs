@@ -55,7 +55,7 @@
               <div class="input-group quantity mx-auto" style="width: 100px">
                 <div id="reloadDiv" class="input-group-btn">
                   <button
-                    class="btn btn-sm btn-primary btn-minus"
+                    class="btn btn-sm btn-dark btn-minus"
                     id="minusbutton"
                     onclick="changeQuantity('<%= item._id %>','<%=item.productId %>',-1)"
                   >
@@ -75,7 +75,7 @@
 
                 <div class="input-group-btn">
                   <button
-                    class="btn btn-sm btn-primary btn-plus"
+                    class="btn btn-sm btn-dark btn-plus"
                     onclick="changeQuantity('<%= item._id %>','<%=item.productId %>',1)"
                   >
                     <i class="fa fa-plus"></i>
@@ -89,7 +89,7 @@
 
             <td class="align-middle">
               <button
-                class="btn btn-sm btn-primary"
+                class="btn btn-sm btn-dark"
                 onclick="removeProduct('<%= item._id %>','<%=item.productId %>')"
               >
                 <i class="fa fa-times"></i>
@@ -120,7 +120,7 @@
             <h5 class="font-weight-bold">Total</h5>
             <h5 class="font-weight-bold">Rs.<%= subtotal %></h5>
           </div>
-          <a class="btn btn-block  btn-primary text-Black my-3 py-3" href="/checkout">
+          <a class="btn btn-block  btn-dark text-white my-3 py-3" href="/checkout">
             Proceed To Checkout
           </a>
         </div>

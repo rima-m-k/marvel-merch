@@ -112,7 +112,7 @@ res.json({orderData,orders})
  
 async function products(req, res) {
   try {
-    const products = await Product.find().populate("product_category"); 
+    const products = await Product.find({isDeleted:false}).populate("product_category"); 
     return res.render("admin/products", { products }); 
   } catch (error) {
     console.log(error);
@@ -544,6 +544,8 @@ async function postEditCoupon(req,res){
           couponName: req.body.coupon_name,
           couponCode: req.body.couponCode,
           discount : req.body.discount,
+          minAmount:req.body.minAmount,
+          maxAmount:req.body.maxAmount,
           startingDate: req.body.startingDate,
           expiryDate: req.body.expiryDate,
         }

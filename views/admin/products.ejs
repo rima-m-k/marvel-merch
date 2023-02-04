@@ -22,7 +22,6 @@
       </thead>
       <tbody>
         <% products.forEach(function(product,i) { %>
-           <% if(product.isDeleted==false){ %>
         <tr>
           <th scope="row"><%= i+1 %></th>
           <td>
@@ -45,7 +44,6 @@
               <button class="btn btn-dark" onclick="swalert('<%= product._id %>')">Delete</button>
           </td>
         </tr>
-        <% } %>
        <% }) %>
       </tbody>
     </table>
