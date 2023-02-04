@@ -58,7 +58,7 @@
             success :(res) =>{
             $("#productSpace").empty(); // Clear the current contents of the div
               res.filteredProducts.forEach(function(product) {
-        var productHTML = '<div class="col-lg-4 col-md-6 col-sm-12 pb-1">' + 
+        var productHTML = '<div class="col-lg-4 col-md-6 col-sm-12 col-6 pb-1">' + 
             '<a href="/productdisplay/' + product._id + '">' + 
             '<div class="card product-item border-0 mb-4">' + 
             '<div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">' + 
@@ -104,7 +104,7 @@ function search() {
     success:(res)=>{
       $("#productSpace").empty(); // Clear the current contents of the div
       res.searchedProducts.forEach(function(product) {
-        var productHTML = '<div class="col-lg-4 col-md-6 col-sm-12 pb-1">' + 
+        var productHTML = '<div class="col-lg-4 col-md-6 col-sm-12 col-6 pb-1">' + 
             '<a href="/productdisplay/' + product._id + '">' + 
             '<div class="card product-item border-0 mb-4">' + 
             '<div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">' + 
@@ -117,9 +117,7 @@ function search() {
             '</div>' + 
             '</div>' + 
             '<div class="card-footer d-flex justify-content-between bg-light border">' + 
-            '<a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-EerieBlack mr-1"></i>View Detail</a>' + 
-            '<a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-EerieBlack mr-1"></i>Add To Cart</a>' + 
-            '</div>' + 
+ '</div>' + 
             '</div>' + 
             '</a>' + 
             '</div>';
@@ -162,7 +160,7 @@ function search() {
       success : (res)=>{
         $("#productSpace").empty(); // Clear the current contents of the div
       res.sortedProducts.forEach(function(product) {
-        var productHTML = '<div class="col-lg-4 col-md-6 col-sm-12 pb-1">' + 
+        var productHTML = '<div class="col-lg-4 col-md-6 col-sm-12 col-6 pb-1">' + 
             '<a href="/productdisplay/' + product._id + '">' + 
             '<div class="card product-item border-0 mb-4">' + 
             '<div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">' + 
@@ -204,7 +202,7 @@ function search() {
 </div> -->
        <div class="productSpace d-flex flex-wrap" id="productSpace">
          <%  allProducts.forEach(function(products){ %>
-          <div class="col-lg-4 col-md-6 col-sm-12 pb-1"  >
+          <div class="col-lg-4 col-md-6 col-sm-12 col-6 pb-1"  >
             <a href="/productdisplay/<%= products._id %>">
           <div class="card product-item border-0 mb-4" >
             <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0" >
