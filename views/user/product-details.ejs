@@ -20,6 +20,9 @@
 
 <!-- Shop Detail Start -->
 <div class="container-fluid py-5">
+  <% if(productdetails.product_title ) { %>
+
+ 
   <div class="row px-xl-5 ">
    
 
@@ -120,6 +123,9 @@ background-color: white;
       </div>
     </div>
   </div>
+  <%  }else{ %>
+<h2>Item Not Found</h2>
+    <% } %>
 </div>
 <!-- Shop Detail End -->
 
